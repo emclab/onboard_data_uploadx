@@ -1,0 +1,24 @@
+<% if @view_in_config && @erb_code %>
+  <%= render inline: @erb_code %>
+  
+<% else %>
+<%= simple_form_for @user_access do |f| %>    
+ 
+  <%= f.input :engine_id, :label => t('Engine Name'), :collection => @engines, :label_method => :name, :value_method => :id, :include_blank => true if @engine.blank? %> 
+  <%= f.input :engine_name, :label => t('Engine Name'), :input_html => {:value => @engine.name} if @engine.present? %> 
+  <%= f.input :engine_id, :as => :hidden, :input_html => {:value => @engine.id} if @engine.present? %>
+  <%= f.input :access_desp, :label => t('Access Desp'), :input_html => {:rows => 3} %> 
+  <%= f.input :action, :label => t('Access Action') %> 
+  <%= f.input :resource, :label => t('Resource') %>
+  <%= f.input :sql_code, :label => t('SQL Code'), :input_html => {:rows => 5} %> 
+  <%= f.input :masked_attrs, :label => t('Masked Attributes'), :input_html => {:rows => 2} %>   
+  <%= f.input :brief_note, :label => t('Brief Note'), :input_html => {:rows => 3} %> 
+  <%= f.input :rank, :label => t('Rank'), :placehoder => '1,2...' %>
+  
+  <%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
+  <%= f.button :submit, t('Save') , :class => BUTTONS_CLS['action'] %>  
+<% end %>  
+
+<% end %>
+
+

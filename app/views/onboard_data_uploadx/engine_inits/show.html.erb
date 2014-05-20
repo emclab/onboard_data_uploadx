@@ -1,0 +1,115 @@
+<% if @view_in_config && @erb_code %>
+  <%= render inline: ERB.new(@erb_code).result(binding) %>
+  
+<% else %>
+<div id="main_body">
+
+<h1><%=@title %></h1>
+
+<p>
+  <b><%=t('Submit Date')%></b>
+  <%= @engine_init.created_at.strftime('%Y/%m/%d') %>
+</p>
+<p>
+  <b><%=t('Engine Name')%></b>
+  <%= @engine_init.engine_name %>
+</p>
+<p>
+  <b><%=t('Init Desp') %></b>
+  <%= @engine_init.init_desp %>
+</p>
+<p>
+  <b><%=t('File Name') %></b>
+  <%= @engine_init.file_name %>
+</p>
+<p>
+  <b><%=t('Init Code') %></b>
+  <%= @engine_init.init_code %>
+</p>
+<p>
+  <b><%=t('Commissioned') %></b>
+  <%= @engine_init.commissioned ? t('Yes') : t('No') %>
+</p>
+<p>
+  <b><%=t('Commission Date') %></b>
+  <%= @engine_init.commissioned_date.strftime('%Y/%m/%d') if @engine_init.commissioned_date.present? %>
+</p>
+<p>
+  <b><%=t('Commissioned By') %></b>
+  <%= @engine_init.commissioned_by.name if @engine_init.commissioned_by_id.present? %>
+</p>
+<p>
+  <b><%=t('Decommissioned') %></b>
+  <%= @engine_init.decommissioned ? t('Yes') : t('No') %>
+</p>
+<p>
+  <b><%=t('Decommission Date') %></b>
+  <%= @engine_init.decommissioned_date.strftime('%Y/%m/%d') if @engine_init.decommissioned_date.present? %>
+</p>
+<p>
+  <b><%=t('Decommissioned By') %></b>
+  <%= @engine_init.decommissioned_by.name if @engine_init.decommissioned_by_id.present? %>
+</p>
+<p>
+  <b><%=t('Tested') %></b>
+  <%= @engine_init.tested ? t('Yes') : t('No') %>
+</p>
+<p>
+  <b><%=t('Test Date') %></b>
+  <%= @engine_init.tested_date.strftime('%Y/%m/%d') if @engine_init.tested_date.present? %>
+</p>
+<p>
+  <b><%=t('Test By') %></b>
+  <%= @engine_init.tested_by.name if @engine_init.tested_by_id.present? %>
+</p>
+<p>
+  <b><%=t('Reviewed') %></b>
+  <%= @engine_init.reviewed ? t('Yes') : t('No') %>
+</p>
+<p>
+  <b><%=t('Review Date') %></b>
+  <%= @engine_init.reviewed_date.strftime('%Y/%m/%d') if @engine_init.reviewed_date.present? %>
+</p>
+<p>
+  <b><%=t('Review By') %></b>
+  <%= @engine_init.reviewed_by.name if @engine_init.reviewed_by_id.present? %>
+</p>
+<p>
+  <b><%= t('Submitted By') %></b>
+  <%= @engine_init.submitted_by.name if @engine_init.submitted_by_id.present? %>
+</p>
+<p>
+  <b><%= t('Last Updated By') %></b>
+  <%= @engine_init.last_updated_by.name if @engine_init.last_updated_by_id.present? %>
+</p>
+<p>
+  <b><%= t('WF State') %>:</b>
+  <%= t(@engine_init.wf_state.humanize.titleize) if @engine_init.wf_state.present? %>
+</p>
+<p>
+<% if @engine_init.wf_state.present? %>
+  <b><%=t('Workflow History')%>:</b>
+  <% StateMachineLogx::Log.where('resource_id = ? AND resource_string = ?', @engine_init.id, params[:controller]).order('created_at DESC').each do |t| %>
+    <li><%= t.created_at.strftime("%Y/%m/%d") %>,&nbsp; <%= t.action_by_name %>,&nbsp; <%=t(t.from)%>,&nbsp; <%=t(t.event.capitalize) %>,&nbsp; <%=t(t.to)%>,&nbsp;<%= t.comment %> </li>
+  <% end %>
+<% end %>	
+</p>
+<p>
+  <b>LOG：</b>
+  <% Commonx::Log.where('resource_id = ? AND resource_name = ?', @engine_init.id, params[:controller].sub('/', '_')).order("created_at DESC").each do |t| %>
+    <li><%= t.created_at.strftime("%Y/%m/%d") %>,&nbsp; <%= t.last_updated_by.name %>,&nbsp; <%= t.log %> </li>
+  <% end %>
+</p>
+   <table class="table table-striped">
+	  <tr>
+	    <th>
+          <%= link_to t('Back'), SUBURI + "/view_handler?index=0", :id => 'close', :class => BUTTONS_CLS['action'] %>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  		  <%= link_to t('New Log'), SUBURI + commonx.new_log_path(:resource_id => @engine_init.id, :resource_name => params[:controller], :subaction => 'engine_init', :format => :js), :remote => true, 
+                          :id => 'new_log_link', :class => BUTTONS_CLS['action'] if has_action_right?('create_engine_init', 'commonx/logs') %>
+   		</th>
+	  </tr>
+	</table> 
+</div>
+
+<% end %>

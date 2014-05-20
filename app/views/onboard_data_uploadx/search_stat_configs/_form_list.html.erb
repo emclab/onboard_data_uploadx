@@ -1,0 +1,62 @@
+<% if @view_in_config && @erb_code %>
+<%= render inline: ERB.new(@erb_code).result(binding) %>
+<% else %>
+
+<div id="main_body">
+<h1><%=@title %></h1>
+<div class="pagination"><%= will_paginate models %></div>
+<table class="table table-striped">
+  <tr>
+    <th>#</th>
+    <th><%=t('Submit Date')%></th>
+    <th><%=t('Engine Name')%></th>
+    <th><%=t('Config Desp')%></th> 
+    <th><%=t('Resource Name')%></th>
+    <th><%=t('Tested')%></th> 
+    <th><%=t('Commissioned')%></th>     
+    <th><%=t('Commission Date')%></th>  
+    <th><%=t('WF State')%></th>
+    <th><%=t('Submitted By')%></th>
+    <th><%=t('Last Updated By')%></th>
+    <th></th>
+    <th></th>
+    <th></th>
+ 
+  </tr>
+
+<% models.each do |r| %>
+  <tr>
+  	<td><%= link_to r.id.to_s, SUBURI + "/view_handler?index=1&url=#{search_stat_config_path(r)}"  %></td> 
+  	<td><%= r.created_at.strftime('%Y/%m/%d')%></td>
+  	<td><%= OnboardDataUploadx.engine_class.find_by_id(r.engine_id).name %></td>	
+    <td><%= r.config_desp %></td>
+    <td><%= r.resource_name %></td>   
+    <td><%= r.tested ? t('Yes') : t('No') %></td>
+    <td><%= r.commissioned ? t('Yes') : t('No') %></td>
+    <td><%= r.commissioned_date.strftime('%Y/%m/%d') if r.commissioned_date.present? %></td>
+    <td><%= r.wf_state.humanize.titleize if r.wf_state.present?  %></td>
+    <td><%= r.submitted_by.name if r.submitted_by_id.present? %></td> 
+    <td><%= r.last_updated_by.name if r.last_updated_by_id.present? %></td> 
+    <td><%= link_to t('Submit Search/Stat Config'), SUBURI + "/authentify/view_handler?index=1&url=#{CGI.escape event_action_search_stat_config_path(r, :wf_event => 'submit', :resource_id => r.id)}", :class => BUTTONS_CLS['action']  if r.wf_state.present? && r.wf_state == 'initial_state' && has_action_right?('submit', params[:controller], r) %></td>
+    <td><%= link_to t('Review Pass'), SUBURI + "/authentify/view_handler?index=1&url=#{CGI.escape event_action_search_stat_config_path(r, :wf_event => 'review_pass', :resource_id => r.id)}", :class => BUTTONS_CLS['action']  if r.wf_state.present? && r.wf_state == 'reviewing' && has_action_right?('review_pass', params[:controller], r) %></td>
+    <td><%= link_to t('Review Reject'), SUBURI + "/authentify/view_handler?index=1&url=#{CGI.escape event_action_search_stat_config_path(r, :wf_event => 'review_reject', :resource_id => r.id)}", :class => BUTTONS_CLS['action']  if r.wf_state.present? && r.wf_state == 'reviewing' && has_action_right?('review_reject', params[:controller], r) %></td>
+    <td><%= link_to t('Test Pass'), SUBURI + "/authentify/view_handler?index=1&url=#{CGI.escape event_action_search_stat_config_path(r, :wf_event => 'test_pass', :resource_id => r.id)}", :class => BUTTONS_CLS['action']  if r.wf_state.present? && r.wf_state == 'testing' && has_action_right?('test_pass', params[:controller], r) %></td>
+    <td><%= link_to t('Test Reject'), SUBURI + "/authentify/view_handler?index=1&url=#{CGI.escape event_action_search_stat_config_path(r, :wf_event => 'test_reject', :resource_id => r.id)}", :class => BUTTONS_CLS['action']  if r.wf_state.present? && r.wf_state == 'testing' && has_action_right?('test_reject', params[:controller], r) %></td>
+    <td><%= link_to t('Commission'), SUBURI + "/authentify/view_handler?index=1&url=#{CGI.escape event_action_search_stat_config_path(r, :wf_event => 'commission', :resource_id => r.id)}", :class => BUTTONS_CLS['action']  if r.wf_state.present? && r.wf_state == 'commissioning' && has_action_right?('commission', params[:controller], r) %></td>
+    <td><%= link_to t('Decommission'), SUBURI + "/authentify/view_handler?index=1&url=#{CGI.escape event_action_search_stat_config_path(r, :wf_event => 'decommission', :resource_id => r.id)}", :confirm => 'Are you sure to decommission?', :class => BUTTONS_CLS['action']  if r.wf_state.present? && r.wf_state == 'commissioned' && has_action_right?('decommission', params[:controller], r) %></td>
+    <td><%= link_to t('Rewind'), SUBURI + "/authentify/view_handler?index=1&url=#{CGI.escape event_action_search_stat_config_path(r, :wf_event => 'rewind', :resource_id => r.id)}", :confirm => 'Are you sure to rewind?', :class => BUTTONS_CLS['action']  if r.wf_state.present? && r.wf_state == 'initial_state' && has_action_right?('submit', params[:controller], r) %></td>
+    <td><%= link_to 'Edit', SUBURI + "/view_handler?index=1&url=#{edit_search_stat_config_path(r)}", :class => BUTTONS_CLS['action'] if has_action_right?('update', params[:controller], r) %></td>
+
+  </tr>
+<% end %>
+   <table class="table table-striped">
+	  <tr>
+	    <th>
+  		  <%= link_to t('Back'), SUBURI + "/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
+  		 &nbsp;<%= link_to t('New Search/Stat Config'), SUBURI + "/view_handler?index=1&url=#{new_engine_config_path}", :class => BUTTONS_CLS['action'] if has_action_right?('create', params[:controller]) %>
+        </th>
+	  </tr>
+	</table> 
+</div>
+
+<% end %>

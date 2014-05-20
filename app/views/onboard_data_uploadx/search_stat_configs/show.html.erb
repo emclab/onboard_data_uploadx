@@ -1,0 +1,149 @@
+<% if @view_in_config && @erb_code %>
+  <%= render inline: ERB.new(@erb_code).result(binding) %>
+  
+<% else %>
+<div id="main_body">
+
+<h1><%=@title %></h1>
+
+<p>
+  <b><%=t('Submit Date')%></b>
+  <%= @search_stat_config.created_at.strftime('%Y/%m/%d') %>
+</p>
+<p>
+  <b><%=t('Engine Name')%></b>
+  <%= @search_stat_config.engine_name %>
+</p>
+<p>
+  <b><%=t('Config Desp') %></b>
+  <%= @search_stat_config.config_desp %>
+</p>
+<p>
+  <b><%=t('Resource Name') %></b>
+  <%= @search_stat_config.resource_name %>
+</p>
+<p>
+  <b><%=t('Stat Function') %></b>
+  <%= @search_stat_config.stat_function %>
+</p>
+<p>
+  <b><%=t('Stat Summary Function') %></b>
+  <%= @search_stat_config.stat_summary_function %>
+</p>
+<p>
+  <b><%=t('Labels/Fields') %></b>
+  <%= @search_stat_config.labels_and_fields %>
+</p>
+<p>
+  <b><%=t('Time Frame') %></b>
+  <%= @search_stat_config.time_frame %>
+</p>
+<p>
+  <b><%=t('List Form Name') %></b>
+  <%= @search_stat_config.search_list_form %>
+</p>
+<p>
+  <b><%=t('Search Where') %></b>
+  <%= @search_stat_config.search_where %>
+</p>
+<p>
+  <b><%=t('Search Results Period SQL') %></b>
+  <%= @search_stat_config.search_results_period_limit %>
+</p>
+<p>
+  <b><%=t('Stat Header') %></b>
+  <%= @search_stat_config.stat_header %>
+</p><p>
+  <b><%=t('Search Params') %></b>
+  <%= @search_stat_config.search_params %>
+</p><p>
+  <b><%=t('Search Summary Function') %></b>
+  <%= @search_stat_config.search_summary_function %>
+</p>
+<p>
+  <b><%=t('Commissioned') %></b>
+  <%= @search_stat_config.commissioned ? t('Yes') : t('No') %>
+</p>
+<p>
+  <b><%=t('Commission Date') %></b>
+  <%= @search_stat_config.commissioned_date.strftime('%Y/%m/%d') if @search_stat_config.commissioned_date.present? %>
+</p>
+<p>
+  <b><%=t('Commissioned By') %></b>
+  <%= @search_stat_config.commissioned_by.name if @search_stat_config.commissioned_by_id.present? %>
+</p>
+<p>
+  <b><%=t('Decommissioned') %></b>
+  <%= @search_stat_config.decommissioned ? t('Yes') : t('No') %>
+</p>
+<p>
+  <b><%=t('Decommission Date') %></b>
+  <%= @search_stat_config.decommissioned_date.strftime('%Y/%m/%d') if @search_stat_config.decommissioned_date.present? %>
+</p>
+<p>
+  <b><%=t('Decommissioned By') %></b>
+  <%= @search_stat_config.decommissioned_by.name if @search_stat_config.decommissioned_by_id.present? %>
+</p>
+<p>
+  <b><%=t('Tested') %></b>
+  <%= @search_stat_config.tested ? t('Yes') : t('No') %>
+</p>
+<p>
+  <b><%=t('Test Date') %></b>
+  <%= @search_stat_config.tested_date.strftime('%Y/%m/%d') if @search_stat_config.tested_date.present? %>
+</p>
+<p>
+  <b><%=t('Test By') %></b>
+  <%= @search_stat_config.tested_by.name if @search_stat_config.tested_by_id.present? %>
+</p>
+<p>
+  <b><%=t('Reviewed') %></b>
+  <%= @search_stat_config.reviewed ? t('Yes') : t('No') %>
+</p>
+<p>
+  <b><%=t('Review Date') %></b>
+  <%= @search_stat_config.reviewed_date.strftime('%Y/%m/%d') if @search_stat_config.reviewed_date.present? %>
+</p>
+<p>
+  <b><%=t('Review By') %></b>
+  <%= @search_stat_config.reviewed_by.name if @search_stat_config.reviewed_by_id.present? %>
+</p>
+<p>
+  <b><%= t('Submitted By') %></b>
+  <%= @search_stat_config.submitted_by.name if @search_stat_config.submitted_by_id.present? %>
+</p>
+<p>
+  <b><%= t('Last Updated By') %></b>
+  <%= @search_stat_config.last_updated_by.name if @search_stat_config.last_updated_by_id.present? %>
+</p>
+<p>
+  <b><%= t('WF State') %>:</b>
+  <%= t(@search_stat_config.wf_state.humanize.titleize) if @search_stat_config.wf_state.present? %>
+</p>
+<p>
+<% if @search_stat_config.wf_state.present? %>
+  <b><%=t('Workflow History')%>:</b>
+  <% StateMachineLogx::Log.where('resource_id = ? AND resource_string = ?', @search_stat_config.id, params[:controller]).order('created_at DESC').each do |t| %>
+    <li><%= t.created_at.strftime("%Y/%m/%d") %>,&nbsp; <%= t.action_by_name %>,&nbsp; <%=t(t.from)%>,&nbsp; <%=t(t.event.capitalize) %>,&nbsp; <%=t(t.to)%>,&nbsp;<%= t.comment %> </li>
+  <% end %>
+<% end %>	
+</p>
+<p>
+  <b>LOG：</b>
+  <% Commonx::Log.where('resource_id = ? AND resource_name = ?', @search_stat_config.id, params[:controller].sub('/', '_')).order("created_at DESC").each do |t| %>
+    <li><%= t.created_at.strftime("%Y/%m/%d") %>,&nbsp; <%= t.last_updated_by.name %>,&nbsp; <%= t.log %> </li>
+  <% end %>
+</p>
+   <table class="table table-striped">
+	  <tr>
+	    <th>
+          <%= link_to t('Back'), SUBURI + "/view_handler?index=0", :id => 'close', :class => BUTTONS_CLS['action'] %>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  		  <%= link_to t('New Log'), SUBURI + commonx.new_log_path(:resource_id => @search_stat_config.id, :resource_name => params[:controller], :subaction => 'search_stat_config', :format => :js), :remote => true, 
+                          :id => 'new_log_link', :class => BUTTONS_CLS['action'] if has_action_right?('create_search_stat_config', 'commonx/logs') %>
+   		</th>
+	  </tr>
+	</table> 
+</div>
+
+<% end %>

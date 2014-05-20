@@ -1,0 +1,126 @@
+<% if @view_in_config && @erb_code %>
+  <%= render inline: ERB.new(@erb_code).result(binding) %>
+  
+<% else %>
+<div id="main_body">
+
+<h1><%=@title %></h1>
+<p>
+  <b><%=t('Submit Date')%></b>
+  <%= @user_access.created_at.strftime('%Y/%m/%d') %>
+</p>
+<p>
+  <b><%=t('Engine Name')%></b>
+  <%= @user_access.engine_name %>
+</p>
+<p>
+  <b><%=t('Access Desp') %></b>
+  <%= @user_access.access_desp %>
+</p>
+<p>
+  <b><%=t('Action') %></b>
+  <%= @user_access.action %>
+</p>
+<p>
+  <b><%=t('Resource') %></b>
+  <%= @user_access.resource %>
+</p>
+<p>
+  <b><%=t('SQL Code') %></b>
+  <%= @user_access.sql_code %>
+</p>
+<p>
+  <b><%=t('Masked Attributes') %></b>
+  <%= @user_access.masked_attrs %>
+</p>
+<p>
+  <b><%=t('Rank') %></b>
+  <%= @user_access.rank %>
+</p>
+<p>
+  <b><%=t('Commissioned') %></b>
+  <%= @user_access.commissioned ? t('Yes') : t('No') %>
+</p>
+<p>
+  <b><%=t('Commission Date') %></b>
+  <%= @user_access.commissioned_date.strftime('%Y/%m/%d') if @user_access.commissioned_date.present? %>
+</p>
+<p>
+  <b><%=t('Commissioned By') %></b>
+  <%= @user_access.commissioned_by.name if @user_access.commissioned_by_id.present? %>
+</p>
+<p>
+  <b><%=t('Decommissioned') %></b>
+  <%= @user_access.decommissioned ? t('Yes') : t('No') %>
+</p>
+<p>
+  <b><%=t('Decommission Date') %></b>
+  <%= @user_access.decommissioned_date.strftime('%Y/%m/%d') if @user_access.decommissioned_date.present? %>
+</p>
+<p>
+  <b><%=t('Decommissioned By') %></b>
+  <%= @user_access.decommissioned_by.name if @user_access.decommissioned_by_id.present? %>
+</p>
+<p>
+  <b><%=t('Tested') %></b>
+  <%= @user_access.tested ? t('Yes') : t('No') %>
+</p>
+<p>
+  <b><%=t('Test Date') %></b>
+  <%= @user_access.tested_date.strftime('%Y/%m/%d') if @user_access.tested_date.present? %>
+</p>
+<p>
+  <b><%=t('Test By') %></b>
+  <%= @user_access.tested_by.name if @user_access.tested_by_id.present? %>
+</p>
+<p>
+  <b><%=t('Reviewed') %></b>
+  <%= @user_access.reviewed ? t('Yes') : t('No') %>
+</p>
+<p>
+  <b><%=t('Review Date') %></b>
+  <%= @user_access.reviewed_date.strftime('%Y/%m/%d') if @user_access.reviewed_date.present? %>
+</p>
+<p>
+  <b><%=t('Review By') %></b>
+  <%= @user_access.reviewed_by.name if @user_access.reviewed_by_id.present? %>
+</p>
+<p>
+  <b><%= t('Submitted By') %></b>
+  <%= @user_access.submitted_by.name if @user_access.submitted_by_id.present? %>
+</p>
+<p>
+  <b><%= t('Last Updated By') %></b>
+  <%= @user_access.last_updated_by.name if @user_access.last_updated_by_id.present? %>
+</p>
+<p>
+  <b><%= t('WF State') %>:</b>
+  <%= t(@user_access.wf_state.humanize.titleize) if @user_access.wf_state.present? %>
+</p>
+<p>
+<% if @user_access.wf_state.present? %>
+  <b><%=t('Workflow History')%>:</b>
+  <% StateMachineLogx::Log.where('resource_id = ? AND resource_string = ?', @user_access.id, params[:controller]).order('created_at DESC').each do |t| %>
+    <li><%= t.created_at.strftime("%Y/%m/%d") %>,&nbsp; <%= t.action_by_name %>,&nbsp; <%=t(t.from)%>,&nbsp; <%=t(t.event.capitalize) %>,&nbsp; <%=t(t.to)%>,&nbsp;<%= t.comment %> </li>
+  <% end %>
+<% end %>	
+</p>
+<p>
+  <b>LOG：</b>
+  <% Commonx::Log.where('resource_id = ? AND resource_name = ?', @user_access.id, params[:controller].sub('/', '_')).order("created_at DESC").each do |t| %>
+    <li><%= t.created_at.strftime("%Y/%m/%d") %>,&nbsp; <%= t.last_updated_by.name %>,&nbsp; <%= t.log %> </li>
+  <% end %>
+</p>
+   <table class="table table-striped">
+	  <tr>
+	    <th>
+          <%= link_to t('Back'), SUBURI + "/view_handler?index=0", :id => 'close', :class => BUTTONS_CLS['action'] %>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  		  <%= link_to t('New Log'), SUBURI + commonx.new_log_path(:resource_id => @user_access.id, :resource_name => params[:controller], :subaction => 'user_access', :format => :js), :remote => true, 
+                          :id => 'new_log_link', :class => BUTTONS_CLS['action'] if has_action_right?('create_user_access', 'commonx/logs') %>
+   		</th>
+	  </tr>
+	</table> 
+</div>
+
+<% end %>

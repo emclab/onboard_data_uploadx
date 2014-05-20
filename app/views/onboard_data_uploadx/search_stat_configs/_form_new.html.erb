@@ -1,0 +1,30 @@
+<% if @view_in_config && @erb_code %>
+  <%= render inline: @erb_code %>
+  
+<% else %>
+<%= simple_form_for @search_stat_config do |f| %>    
+ 
+  <%= f.input :engine_id, :label => t('Engine Name'), :collection => @engines, :label_method => :name, :value_method => :id, :include_blank => true if @engine.blank? %> 
+  <%= f.input :engine_name, :label => t('Engine Name'), :input_html => {:value => @engine.name} if @engine.present? %> 
+  <%= f.input :engine_id, :as => :hidden, :input_html => {:value => @engine.id} if @engine.present? %>
+  <%= f.input :config_desp, :label => t('Config Desp'), :input_html => {:rows => 3} %> 
+  <%= f.input :resource_name, :label => t('Resource Name') %>
+  <%= f.input :stat_function, :label => t('Stat Function'), :input_html => {:rows => 10} %> 
+  <%= f.input :stat_summary_function, :label => t('Stat Summary Function'), :input_html => {:rows => 10} %> 
+  <%= f.input :labels_and_fields, :label => t('Labels/Fields'), :input_html => {:rows => 10} %>   
+  <%= f.input :time_frame, :label => t('Time Frame') %>
+  <%= f.input :search_list_form, :label => t('List Form Name') %>
+  <%= f.input :search_where, :label => t('Search Where'), :input_html => {:rows => 10} %> 
+  <%= f.input :search_results_period_limit, :label => t('Seach Results Period SQL'), :input_html => {:rows => 2} %> 
+  <%= f.input :stat_header, :label => t('Stat Header') %>
+  <%= f.input :search_params, :label => t('Search Params'), :input_html => {:rows => 10} %>
+  <%= f.input :search_summary_function, :label => t('Seach Summary Function'), :input_html => {:rows => 2} %> 
+  <%= f.input :brief_note, :label => t('Brief Note'), :input_html => {:rows => 3} %> 
+  
+  <%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
+  <%= f.button :submit, t('Save') , :class => BUTTONS_CLS['action'] %>  
+<% end %>  
+
+<% end %>
+
+

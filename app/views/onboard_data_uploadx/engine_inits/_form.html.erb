@@ -1,0 +1,18 @@
+<% if @view_in_config && @erb_code %>
+  <%= render inline: @erb_code %>
+  
+<% else %>
+<%= simple_form_for @engine_init do |f| %>    
+ 
+  <%= f.input :engine_id, :label => t('Engine Name'), :collection => @engines %> 
+  <%= f.input :init_desp, :label => t('Init Desp'), :input_html => {:rows => 3} %> 
+  <%= f.input :file_name, :label => t('File Name') %>
+  <%= f.input :init_code, :label => t('Init Code'), :input_html => {:rows => 10} %>   
+  
+  <%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
+  <%= f.button :submit, t('Save') , :class => BUTTONS_CLS['action'] %>  
+<% end %> 
+
+<% end %> 
+
+
