@@ -8,6 +8,7 @@ module OnboardDataUploadx
     def index
       @title = t('User Accesses')
       @user_accesses =  params[:onboard_data_uploadx_user_accesses][:model_ar_r]
+      @user_accesses = @user_accesses.where(:engine_id => eval(OnboardDataUploadx.engine_ids_belong_to_a_project)) if @project_id
       @user_accesses = @user_accesses.where('onboard_data_uploadx_user_accesses.engine_id = ?', @engine.id) if @engine
       @user_accesses = @user_accesses.where('TRIM(onboard_data_uploadx_user_accesses.action) = ?', @access_action) if @access_action.present?
       @user_accesses = @user_accesses.where('TRIM(onboard_data_uploadx_user_accesses.resource) = ?', @resource) if @resource.present?
@@ -73,6 +74,7 @@ module OnboardDataUploadx
     
     protected
     def load_record
+      @project_id = params[:project_id].to_i if params[:project_id].present?
       @engine = OnboardDataUploadx.engine_class.find_by_id(params[:engine_id].to_i) if params[:engine_id].present?
       @engine = OnboardDataUploadx.engine_class.find_by_id(OnboardDataUploadx::UserAccess.find_by_id(params[:id]).engine_id) if params[:id].present?
       @access_action = params[:access_action].strip if params[:access_action].present?

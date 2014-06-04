@@ -3,6 +3,7 @@ class CreateSwModuleInfoxModuleInfos < ActiveRecord::Migration
   def change
     create_table :sw_module_infox_module_infos do |t|
       t.string :name
+      t.string :version
       t.integer :category_id
       t.integer :last_updated_by_id
       t.boolean :active, :default => false
@@ -28,5 +29,6 @@ class CreateSwModuleInfoxModuleInfos < ActiveRecord::Migration
     add_index :sw_module_infox_module_infos, :name
     add_index :sw_module_infox_module_infos, :wf_state
     add_index :sw_module_infox_module_infos, :active
+    add_index :sw_module_infox_module_infos, :version
   end
 end

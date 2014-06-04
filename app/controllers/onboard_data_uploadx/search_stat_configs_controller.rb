@@ -8,6 +8,7 @@ module OnboardDataUploadx
     def index
       @title = t('Search/Stat Configs')
       @search_stat_configs =  params[:onboard_data_uploadx_search_stat_configs][:model_ar_r]
+      @search_stat_configs = @search_stat_configs.where(:engine_id => eval(OnboardDataUploadx.engine_ids_belong_to_a_project)) if @project_id
       @search_stat_configs = @search_stat_configs.where('onboard_data_uploadx_search_stat_configs.engine_id = ?', @engine.id) if @engine
       @search_stat_configs = @search_stat_configs.where('TRIM(onboard_data_uploadx_search_stat_configs.resource_name) = ?', @resource_name) if @resource_name
       @search_stat_configs = @search_stat_configs.page(params[:page]).per_page(@max_pagination)
@@ -71,6 +72,7 @@ module OnboardDataUploadx
     
     protected
     def load_record
+      @project_id = params[:project_id].to_i if params[:project_id].present?
       @engine = OnboardDataUploadx.engine_class.find_by_id(params[:engine_id].to_i) if params[:engine_id].present?
       @engine = OnboardDataUploadx.engine_class.find_by_id(OnboardDataUploadx::SearchStatConfig.find_by_id(params[:id]).engine_id) if params[:id].present?
       @resource_name = params[:resource_name].strip if params[:resource_name].present?

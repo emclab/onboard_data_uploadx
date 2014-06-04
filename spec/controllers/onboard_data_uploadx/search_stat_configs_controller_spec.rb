@@ -11,14 +11,8 @@ module OnboardDataUploadx
     before(:each) do
       #wf_common_action(from, to, event)
       wf = "def submit
-          wf_common_action('initial_state', 'reviewing', 'submit')
+          wf_common_action('initial_state', 'testing', 'submit')
         end   
-        def review_reject
-          wf_common_action('reviewing', 'initial_state', 'review_reject')
-        end 
-        def review_pass
-          wf_common_action('reviewing', 'testing', 'review_pass')
-        end
         def test_reject
           wf_common_action('testing', 'initial_state', 'test_reject')
         end 
@@ -119,7 +113,7 @@ module OnboardDataUploadx
         :sql_code => "")
         session[:user_id] = @u.id
         session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
-        q = FactoryGirl.attributes_for(:onboard_data_uploadx_search_stat_config, :config_desp => nil)
+        q = FactoryGirl.attributes_for(:onboard_data_uploadx_search_stat_config, :resource_name => nil)
         get 'create', {:use_route => :onboard_data_uploadx, :search_stat_config => q}
         response.should render_template('new')
       end
@@ -165,7 +159,7 @@ module OnboardDataUploadx
         session[:user_id] = @u.id
         session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
         q = FactoryGirl.create(:onboard_data_uploadx_search_stat_config)
-        get 'update', {:use_route => :onboard_data_uploadx, :id => q.id, :search_stat_config => {:config_desp => nil}}
+        get 'update', {:use_route => :onboard_data_uploadx, :id => q.id, :search_stat_config => {:search_list_form => nil}}
         response.should render_template('edit')
       end
     end

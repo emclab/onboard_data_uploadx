@@ -5,7 +5,7 @@ FactoryGirl.define do
     name "MyString"
     category_id 1
     last_updated_by_id 1
-    active true
+    active false
     module_desp "MyText"
     api_spec "MyText"
     about_init "MyText"

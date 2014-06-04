@@ -39,7 +39,7 @@ class CreateOnboardDataUploadxUserAccesses < ActiveRecord::Migration
     add_index :onboard_data_uploadx_user_accesses, :submitted_by_id
     add_index :onboard_data_uploadx_user_accesses, :commissioned_by_id
     add_index :onboard_data_uploadx_user_accesses, :reviewed_by_id
-    add_index :onboard_data_uploadx_user_accesses, :decommissioned_by_id
+    add_index :onboard_data_uploadx_user_accesses, :decommissioned_by_id, :name => :onboard_data_uploadx_user_accesses_decomed_by
     add_index :onboard_data_uploadx_user_accesses, :tested_by_id
   end
 end

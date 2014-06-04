@@ -11,14 +11,8 @@ module OnboardDataUploadx
     before(:each) do
       #wf_common_action(from, to, event)
       wf = "def submit
-          wf_common_action('initial_state', 'reviewing', 'submit')
+          wf_common_action('initial_state', 'testing', 'submit')
         end   
-        def review_reject
-          wf_common_action('reviewing', 'initial_state', 'review_reject')
-        end 
-        def review_pass
-          wf_common_action('reviewing', 'testing', 'review_pass')
-        end
         def test_reject
           wf_common_action('testing', 'initial_state', 'test_reject')
         end 
@@ -64,7 +58,7 @@ module OnboardDataUploadx
         session[:user_id] = @u.id
         session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
         q = FactoryGirl.create(:onboard_data_uploadx_user_access, :engine_id => @sw_mod.id)
-        q1 = FactoryGirl.create(:onboard_data_uploadx_user_access, :access_desp => 'a new one', :engine_id => @sw_mod1.id)
+        q1 = FactoryGirl.create(:onboard_data_uploadx_user_access, :action => 'a new one', :engine_id => @sw_mod1.id)
         get 'index', {:use_route => :onboard_data_uploadx}
         assigns(:user_accesses).should =~ [q, q1]
       end
@@ -75,7 +69,7 @@ module OnboardDataUploadx
         session[:user_id] = @u.id
         session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
         q = FactoryGirl.create(:onboard_data_uploadx_user_access, :engine_id => @sw_mod.id)
-        q1 = FactoryGirl.create(:onboard_data_uploadx_user_access, :access_desp => '50', :engine_id => @sw_mod.id + 1)
+        q1 = FactoryGirl.create(:onboard_data_uploadx_user_access, :action => '50', :engine_id => @sw_mod.id + 1)
         get 'index', {:use_route => :onboard_data_uploadx, :engine_id => @sw_mod.id}
         assigns(:user_accesses).should =~ [q]
       end
@@ -108,7 +102,7 @@ module OnboardDataUploadx
         :sql_code => "")
         session[:user_id] = @u.id
         session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
-        q = FactoryGirl.attributes_for(:onboard_data_uploadx_user_access, :access_desp => nil)
+        q = FactoryGirl.attributes_for(:onboard_data_uploadx_user_access, :action => nil)
         get 'create', {:use_route => :onboard_data_uploadx, :user_access => q}
         response.should render_template('new')
       end
@@ -154,7 +148,7 @@ module OnboardDataUploadx
         session[:user_id] = @u.id
         session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
         q = FactoryGirl.create(:onboard_data_uploadx_user_access)
-        get 'update', {:use_route => :onboard_data_uploadx, :id => q.id, :user_access => {:access_desp => nil}}
+        get 'update', {:use_route => :onboard_data_uploadx, :id => q.id, :user_access => {:resource => nil}}
         response.should render_template('edit')
       end
     end
@@ -178,9 +172,9 @@ module OnboardDataUploadx
         session[:user_id] = @u.id
         session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
         q = FactoryGirl.create(:onboard_data_uploadx_user_access, :created_at => 50.days.ago, :wf_state => 'initial_state')  #created too long ago to show
-        q1 = FactoryGirl.create(:onboard_data_uploadx_user_access, :wf_state => 'reviewing', :access_desp => 'new')
-        q2 = FactoryGirl.create(:onboard_data_uploadx_user_access, :wf_state => 'initial_state', :access_desp => 'new+')
-        q3 = FactoryGirl.create(:onboard_data_uploadx_user_access, :wf_state => 'decommissioned', :access_desp => 'new++')  #wf_state can't be what was defined.
+        q1 = FactoryGirl.create(:onboard_data_uploadx_user_access, :wf_state => 'reviewing', :action => 'new')
+        q2 = FactoryGirl.create(:onboard_data_uploadx_user_access, :wf_state => 'initial_state', :action => 'new+')
+        q3 = FactoryGirl.create(:onboard_data_uploadx_user_access, :wf_state => 'decommissioned', :action => 'new++')  #wf_state can't be what was defined.
         get 'list_open_process', {:use_route => :onboard_data_uploadx}
         assigns(:user_accesses).should =~ [q1, q2]
       end

@@ -7,7 +7,7 @@
   <%= f.input :engine_id, :label => t('Engine Name'), :collection => @engines, :label_method => :name, :value_method => :id, :include_blank => true if @engine.blank? %> 
   <%= f.input :engine_name, :label => t('Engine Name'), :input_html => {:value => @engine.name} if @engine.present? %> 
   <%= f.input :engine_id, :as => :hidden, :input_html => {:value => @engine.id} if @engine.present? %>
-  <%= f.input :init_desp, :label => t('Init Desp'), :input_html => {:rows => 3} %> 
+  <%= f.input :init_desp, :label => t('Init Desp'), :input_html => {:rows => 2} %> 
   <%= f.input :file_name, :label => t('File Name') %>
   <%= f.input :init_code, :label => t('Init Code'), :input_html => {:rows => 10} %>   
   

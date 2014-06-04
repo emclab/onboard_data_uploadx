@@ -8,6 +8,7 @@ module OnboardDataUploadx
     def index
       @title = t('Engine Configs')
       @engine_configs =  params[:onboard_data_uploadx_engine_configs][:model_ar_r]
+      @engine_configs = @engine_configs.where(:engine_id => eval(OnboardDataUploadx.engine_ids_belong_to_a_project)) if @project_id
       @engine_configs = @engine_configs.where('onboard_data_uploadx_engine_configs.engine_id = ?', @engine.id) if @engine
       @engine_configs = @engine_configs.where('TRIM(onboard_data_uploadx_engine_configs.argument_name) = ?', @argument_name) if @argument_name.present?
       @engine_configs = @engine_configs.page(params[:page]).per_page(@max_pagination)
@@ -72,6 +73,7 @@ module OnboardDataUploadx
     
     protected
     def load_record
+      @project_id = params[:project_id].to_i if params[:project_id].present?
       @engine = OnboardDataUploadx.engine_class.find_by_id(params[:engine_id].to_i) if params[:engine_id].present?
       @engine = OnboardDataUploadx.engine_class.find_by_id(OnboardDataUploadx::EngineConfig.find_by_id(params[:id]).engine_id) if params[:id].present?
       @argument_name = params[:argument_name].strip if params[:argument_name].present?

@@ -143,7 +143,7 @@ describe "LinkTests" do
       user_access = FactoryGirl.create(:user_access, :action => 'submit', :resource =>'onboard_data_uploadx_search_stat_configs', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "")
       
-      @engine = FactoryGirl.create(:sw_module_infox_module_info, :name => 'myengine')
+      @engine = FactoryGirl.create(:sw_module_infox_module_info, :name => 'myengine', :active => true)
       
       visit '/'
       #save_and_open_page

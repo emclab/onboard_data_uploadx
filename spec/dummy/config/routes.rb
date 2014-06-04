@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   mount StateMachineLogx::Engine => '/sm_log'
   mount BizWorkflowx::Engine => '/biz_wf'
   mount SwModuleInfox::Engine => '/sw_module'
+  mount ResourceAllocx::Engine => '/res_alloc'
   
   resource :session
   

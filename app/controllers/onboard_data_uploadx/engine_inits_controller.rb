@@ -8,6 +8,7 @@ module OnboardDataUploadx
     def index
       @title = t('Engine Inits')
       @engine_inits =  params[:onboard_data_uploadx_engine_inits][:model_ar_r]
+      @engine_inits = @engine_inits.where(:engine_id => eval(OnboardDataUploadx.engine_ids_belong_to_a_project)) if @project_id
       @engine_inits = @engine_inits.where('onboard_data_uploadx_engine_inits.engine_id = ?', @engine.id) if @engine
       @engine_inits = @engine_inits.page(params[:page]).per_page(@max_pagination)
       @erb_code = find_config_const('engine_init_index_view', 'onboard_data_uploadx')
@@ -71,9 +72,9 @@ module OnboardDataUploadx
     
     protected
     def load_record
+      @project_id = params[:project_id].to_i if params[:project_id].present?
       @engine = OnboardDataUploadx.engine_class.find_by_id(params[:engine_id].to_i) if params[:engine_id].present?
-      @engine = OnboardDataUploadx.engine_class.find_by_id(OnboardDataUploadx::EngineInit.find_by_id(params[:id]).engine_id) if params[:id].present?
-      
+      @engine = OnboardDataUploadx.engine_class.find_by_id(OnboardDataUploadx::EngineInit.find_by_id(params[:id]).engine_id) if params[:id].present?      
     end
   end
 end

@@ -5,16 +5,16 @@
 <%= simple_form_for @engine_config do |f| %>    
  
   <%= f.input :engine_id, :label => t('Engine Name'), :collection => @engines %> 
-  <%= f.input :argument_desp, :label => t('Argument Desp'), :input_html => {:rows => 3} %> 
+  <%= f.input :argument_desp, :label => t('Argument Desp'), :input_html => {:rows => 2} %> 
   <%= f.input :argument_name, :label => t('Argument Name') %>
   <%= f.input :engine_version, :label => t('Engine Version') %> 
-  <%= f.input :argument_value, :label => t('Argument Value'), :input_html => {:rows => 30} %>   
+  <%= f.input :argument_value, :label => t('Argument Value'), :input_html => {:rows => 20} %>   
   <% if readonly?(@engine_config, 'global')%>
      <%= f.input :global_noupdate, :label => t('Global'), :readonly => true, :required => false, :input_html => {:value => @engine_config.global} %>
   <% else %>
      <%= f.input :global, :label => t('Global'), :collection => [[t('Yes'), true], [t('No'), false]]%>
   <% end %>      
-  <%= f.input :brief_note, :label => t('Brief Note'), :input_html => {:rows => 3} %> 
+  <%= f.input :brief_note, :label => t('Brief Note'), :input_html => {:rows => 2} %> 
   
   <%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
   <%= f.button :submit, t('Save') , :class => BUTTONS_CLS['action'] %>  

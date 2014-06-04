@@ -10,11 +10,7 @@ module OnboardDataUploadx
         eval(wf) 
       elsif Rails.env.test?  
         state :initial_state do
-          event :submit, :transitions_to => :reviewing
-        end
-        state :reviewing do
-          event :review_reject, :transitions_to => :initial_state
-          event :review_pass, :transitions_to => :testing 
+          event :submit, :transitions_to => :testing
         end
         state :testing do
           event :test_reject, :transitions_to => :initial_state
@@ -58,16 +54,15 @@ module OnboardDataUploadx
     belongs_to :tested_by, :class_name => 'Authentify::User'      
     belongs_to :engine, :class_name => OnboardDataUploadx.engine_class.to_s  
     
-    validates :argument_desp, :argument_name, :presence => true 
-    validates :engine_id, :presence => true, :numericality => {:only_integer => true, :greater_than => 0} 
-    validates :argument_desp, :uniqueness => {:scope => [:engine_name, :argument_name], :case_sensitive => false, :message => I18n.t('Duplicate Description')}, :if => 'engine_name.present?'    
-    validates :argument_desp, :uniqueness => {:scope => :argument_name, :case_sensitive => false, :message => I18n.t('Duplicate Description')}, :if => 'engine_name.blank?'
+    validates :argument_name, :presence => true 
+    validates :engine_id, :numericality => {:only_integer => true, :greater_than => 0} 
+    validates :argument_name, :uniqueness => {:scope => [:engine_id, :argument_value], :case_sensitive => false, :message => I18n.t('Duplicate Argument Name')}   
     validate :dynamic_validate 
     
     def dynamic_validate
       wf = Authentify::AuthentifyUtility.find_config_const('dynamic_validate_engine_config', 'onboard_data_uploadx')
       eval(wf) if wf.present?
-    end        
+    end    
                                           
     #for workflow input validation  
     validate :validate_wf_input_data, :if => 'wf_state.present?' 

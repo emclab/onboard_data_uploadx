@@ -30,7 +30,7 @@
   <tr>
   	<td><%= link_to r.id.to_s, SUBURI + "/view_handler?index=1&url=#{engine_config_path(r)}"  %></td> 
   	<td><%= r.created_at.strftime('%Y/%m/%d')%></td>
-  	<td><%= r.engine_name %></td>	
+  	<td><%= r.engine.name if r.engine_id.present? %></td>	
     <td><%= r.argument_desp %></td>
     <td><%= r.argument_name %></td>   
     <td><%= r.argument_value[0..40] if r.argument_value.present? %></td>
@@ -42,14 +42,13 @@
     <td><%= r.submitted_by.name if r.submitted_by_id.present? %></td> 
     <td><%= r.last_updated_by.name if r.last_updated_by_id.present? %></td> 
     <td><%= link_to t('Submit Config Data'), SUBURI + "/authentify/view_handler?index=1&url=#{CGI.escape event_action_engine_config_path(r, :wf_event => 'submit', :resource_id => r.id)}", :class => BUTTONS_CLS['action']  if r.wf_state.present? && r.wf_state == 'initial_state' && has_action_right?('submit', params[:controller], r) %></td>
-    <td><%= link_to t('Review Pass'), SUBURI + "/authentify/view_handler?index=1&url=#{CGI.escape event_action_engine_config_path(r, :wf_event => 'review_pass', :resource_id => r.id)}", :class => BUTTONS_CLS['action']  if r.wf_state.present? && r.wf_state == 'reviewing' && has_action_right?('review_pass', params[:controller], r) %></td>
-    <td><%= link_to t('Review Reject'), SUBURI + "/authentify/view_handler?index=1&url=#{CGI.escape event_action_engine_config_path(r, :wf_event => 'review_reject', :resource_id => r.id)}", :class => BUTTONS_CLS['action']  if r.wf_state.present? && r.wf_state == 'reviewing' && has_action_right?('review_reject', params[:controller], r) %></td>
     <td><%= link_to t('Test Pass'), SUBURI + "/authentify/view_handler?index=1&url=#{CGI.escape event_action_engine_config_path(r, :wf_event => 'test_pass', :resource_id => r.id)}", :class => BUTTONS_CLS['action']  if r.wf_state.present? && r.wf_state == 'testing' && has_action_right?('test_pass', params[:controller], r) %></td>
     <td><%= link_to t('Test Reject'), SUBURI + "/authentify/view_handler?index=1&url=#{CGI.escape event_action_engine_config_path(r, :wf_event => 'test_reject', :resource_id => r.id)}", :class => BUTTONS_CLS['action']  if r.wf_state.present? && r.wf_state == 'testing' && has_action_right?('test_reject', params[:controller], r) %></td>
     <td><%= link_to t('Commission'), SUBURI + "/authentify/view_handler?index=1&url=#{CGI.escape event_action_engine_config_path(r, :wf_event => 'commission', :resource_id => r.id)}", :class => BUTTONS_CLS['action']  if r.wf_state.present? && r.wf_state == 'commissioning' && has_action_right?('commission', params[:controller], r) %></td>
     <td><%= link_to t('Decommission'), SUBURI + "/authentify/view_handler?index=1&url=#{CGI.escape event_action_engine_config_path(r, :wf_event => 'decommission', :resource_id => r.id)}", :confirm => 'Are you sure to decommission?', :class => BUTTONS_CLS['action']  if r.wf_state.present? && r.wf_state == 'commissioned' && has_action_right?('decommission', params[:controller], r) %></td>
     <td><%= link_to t('Rewind'), SUBURI + "/authentify/view_handler?index=1&url=#{CGI.escape event_action_engine_config_path(r, :wf_event => 'rewind', :resource_id => r.id)}", :confirm => 'Are you sure to rewind?', :class => BUTTONS_CLS['action']  if r.wf_state.present? && r.wf_state == 'initial_state' && has_action_right?('submit', params[:controller], r) %></td>
-    <td><%= link_to 'Edit', SUBURI + "/view_handler?index=1&url=#{edit_engine_config_path(r)}", :class => BUTTONS_CLS['action'] if has_action_right?('update', params[:controller], r) %></td>
+    <td><%= link_to t('New Onboard Data'), SUBURI + "/view_handler?index=1&url=#{SUBURI + CGI.escape(onboard_datax.new_onboard_engine_config_path(project_id: @project_id, engine_id: r.engine_id, engine_config_id: r.id))}", :class => BUTTONS_CLS['action'] if @project_id && has_action_right?('create', 'onboard_datax/onboard_engine_configs', r) %></td>
+    <td><%= link_to t('Edit'), SUBURI + "/view_handler?index=1&url=#{edit_engine_config_path(r)}", :class => BUTTONS_CLS['action'] if has_action_right?('update', params[:controller], r) %></td>
 
   </tr>
 <% end %>
@@ -58,7 +57,7 @@
 	    <th>
   		  <%= link_to t('Back'), SUBURI + "/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
   		 &nbsp;<%= link_to t('New Engine Config'), SUBURI + "/view_handler?index=1&url=#{new_engine_config_path}", :class => BUTTONS_CLS['action'] if has_action_right?('create', params[:controller]) %>
-        </th>
+  	    </th>
 	  </tr>
 	</table> 
 </div>

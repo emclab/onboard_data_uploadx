@@ -10,11 +10,7 @@ module OnboardDataUploadx
         eval(wf) 
       elsif Rails.env.test?  
         state :initial_state do
-          event :submit, :transitions_to => :reviewing
-        end
-        state :reviewing do
-          event :review_reject, :transitions_to => :initial_state
-          event :review_pass, :transitions_to => :testing 
+          event :submit, :transitions_to => :testing
         end
         state :testing do
           event :test_reject, :transitions_to => :initial_state
@@ -56,9 +52,9 @@ module OnboardDataUploadx
     belongs_to :tested_by, :class_name => 'Authentify::User'  
     belongs_to :engine, :class_name => OnboardDataUploadx.engine_class.to_s
     
-    validates :access_desp, :action, :resource, :presence => true
+    validates :action, :resource, :presence => true
     validates :engine_id, :presence => true, :numericality => {:only_integer => true, :greater_than => 0}
-    validates :access_desp, :uniqueness => {:scope => [:action, :resource], :case_sensitive => false, :message => I18n.t('Duplicate Description')} 
+    validates :action, :uniqueness => {:scope => [:resource, :sql_code, :masked_attrs], :case_sensitive => false, :message => I18n.t('Duplicate Action')} 
     validates :rank, :numericality => {:only_integer => true}, :if => 'rank.present?'
     validate :dynamic_validate 
     

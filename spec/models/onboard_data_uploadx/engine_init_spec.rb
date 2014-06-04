@@ -7,9 +7,9 @@ module OnboardDataUploadx
       c.should be_valid
     end
     
-    it "should reject nil init desp" do
+    it "should take nil init desp" do
       c = FactoryGirl.build(:onboard_data_uploadx_engine_init, :init_desp => nil)
-      c.should_not be_valid
+      c.should be_valid
     end
     
     it "should reject 0 engine id" do
@@ -17,9 +17,9 @@ module OnboardDataUploadx
       c.should_not be_valid
     end
     
-    it "should reject dup init desp for the same engine name " do
-      c = FactoryGirl.create(:onboard_data_uploadx_engine_init, :init_desp => 'a new one')
-      c1 = FactoryGirl.build(:onboard_data_uploadx_engine_init, :init_desp => 'A New One')
+    it "should reject dup init code for the same engine  " do
+      c = FactoryGirl.create(:onboard_data_uploadx_engine_init, :init_code => 'a new one')
+      c1 = FactoryGirl.build(:onboard_data_uploadx_engine_init, :init_code => 'A New One')
       c1.should_not be_valid
     end
     

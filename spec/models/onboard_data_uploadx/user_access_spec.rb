@@ -7,23 +7,29 @@ module OnboardDataUploadx
       c.should be_valid
     end
     
-    it "should reject nil argument desp" do
+    it "should take nil argument desp" do
       c = FactoryGirl.build(:onboard_data_uploadx_user_access, :access_desp => nil)
-      c.should_not be_valid
+      c.should be_valid
     end
     
-    it "should reject dup argument desp for argument name and engine name" do
-      c = FactoryGirl.create(:onboard_data_uploadx_user_access, :access_desp => 'a new one')
-      c1 = FactoryGirl.build(:onboard_data_uploadx_user_access, :access_desp => 'A New One')
+    it "should reject dup action when resource, sql code and masked attrs are the same" do
+      c = FactoryGirl.create(:onboard_data_uploadx_user_access, :action => 'a new one')
+      c1 = FactoryGirl.build(:onboard_data_uploadx_user_access, :action => 'A New One')
       c1.should_not be_valid
     end
     
-    it "should reject nil argument name" do
+    it "should reject dup action when resource, sql code and masked attrs are the same" do
+      c = FactoryGirl.create(:onboard_data_uploadx_user_access, :action => 'a new one', :sql_code => nil, :masked_attrs => nil)
+      c1 = FactoryGirl.build(:onboard_data_uploadx_user_access, :action => 'A New One', :sql_code => nil, :masked_attrs => nil)
+      c1.should_not be_valid
+    end
+    
+    it "should reject nil action" do
       c = FactoryGirl.build(:onboard_data_uploadx_user_access, :action => nil)
       c.should_not be_valid
     end
     
-    it "should reject nil argument name" do
+    it "should reject nil resource" do
       c = FactoryGirl.build(:onboard_data_uploadx_user_access, :resource => nil)
       c.should_not be_valid
     end
