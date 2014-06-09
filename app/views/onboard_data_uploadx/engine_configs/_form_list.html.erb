@@ -2,9 +2,9 @@
 <%= render inline: ERB.new(@erb_code).result(binding) %>
 <% else %>
 
-<div id="main_body">
 <h1><%=@title %></h1>
 <div class="pagination"><%= will_paginate models %></div>
+<%=t('# of records')%>=<%=models.count%>
 <table class="table table-striped">
   <tr>
     <th>#</th>
@@ -31,10 +31,10 @@
   	<td><%= link_to r.id.to_s, SUBURI + "/view_handler?index=1&url=#{engine_config_path(r)}"  %></td> 
   	<td><%= r.created_at.strftime('%Y/%m/%d')%></td>
   	<td><%= r.engine.name if r.engine_id.present? %></td>	
-    <td><%= r.argument_desp %></td>
+    <td><%= r.argument_desp[0..60] %></td>
     <td><%= r.argument_name %></td>   
-    <td><%= r.argument_value[0..40] if r.argument_value.present? %></td>
-    <td><%= r.brief_note[0..40] if r.brief_note.present? %></td>
+    <td><%= r.argument_value[0..5]  %></td>
+    <td><%= r.brief_note %></td>
     <td><%= r.tested ? t('Yes') : t('No') %></td>
     <td><%= r.commissioned ? t('Yes') : t('No') %></td>
     <td><%= r.commissioned_date.strftime('%Y/%m/%d') if r.commissioned_date.present? %></td>
@@ -46,7 +46,7 @@
     <td><%= link_to t('Test Reject'), SUBURI + "/authentify/view_handler?index=1&url=#{CGI.escape event_action_engine_config_path(r, :wf_event => 'test_reject', :resource_id => r.id)}", :class => BUTTONS_CLS['action']  if r.wf_state.present? && r.wf_state == 'testing' && has_action_right?('test_reject', params[:controller], r) %></td>
     <td><%= link_to t('Commission'), SUBURI + "/authentify/view_handler?index=1&url=#{CGI.escape event_action_engine_config_path(r, :wf_event => 'commission', :resource_id => r.id)}", :class => BUTTONS_CLS['action']  if r.wf_state.present? && r.wf_state == 'commissioning' && has_action_right?('commission', params[:controller], r) %></td>
     <td><%= link_to t('Decommission'), SUBURI + "/authentify/view_handler?index=1&url=#{CGI.escape event_action_engine_config_path(r, :wf_event => 'decommission', :resource_id => r.id)}", :confirm => 'Are you sure to decommission?', :class => BUTTONS_CLS['action']  if r.wf_state.present? && r.wf_state == 'commissioned' && has_action_right?('decommission', params[:controller], r) %></td>
-    <td><%= link_to t('Rewind'), SUBURI + "/authentify/view_handler?index=1&url=#{CGI.escape event_action_engine_config_path(r, :wf_event => 'rewind', :resource_id => r.id)}", :confirm => 'Are you sure to rewind?', :class => BUTTONS_CLS['action']  if r.wf_state.present? && r.wf_state == 'initial_state' && has_action_right?('submit', params[:controller], r) %></td>
+    <td><%= link_to t('Rewind'), SUBURI + "/authentify/view_handler?index=1&url=#{CGI.escape event_action_engine_config_path(r, :wf_event => 'rewind', :resource_id => r.id)}", :confirm => 'Are you sure to rewind?', :class => BUTTONS_CLS['action']  if r.wf_state.present? && r.wf_state == 'commissioned' && has_action_right?('rewind', params[:controller], r) %></td>
     <td><%= link_to t('New Onboard Data'), SUBURI + "/view_handler?index=1&url=#{SUBURI + CGI.escape(onboard_datax.new_onboard_engine_config_path(project_id: @project_id, engine_id: r.engine_id, engine_config_id: r.id))}", :class => BUTTONS_CLS['action'] if @project_id && has_action_right?('create', 'onboard_datax/onboard_engine_configs', r) %></td>
     <td><%= link_to t('Edit'), SUBURI + "/view_handler?index=1&url=#{edit_engine_config_path(r)}", :class => BUTTONS_CLS['action'] if has_action_right?('update', params[:controller], r) %></td>
 
@@ -57,9 +57,9 @@
 	    <th>
   		  <%= link_to t('Back'), SUBURI + "/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
   		 &nbsp;<%= link_to t('New Engine Config'), SUBURI + "/view_handler?index=1&url=#{new_engine_config_path}", :class => BUTTONS_CLS['action'] if has_action_right?('create', params[:controller]) %>
+  		 &nbsp;<%= link_to t('Mass Onboard'), SUBURI + "/view_handler?index=1&url=#{mass_onboard_engine_configs_path(project_id: @project_id)}", :class => BUTTONS_CLS['action'] if @project_id && has_action_right?('create', 'onboard_datax/onboard_engine_configs') %>
   	    </th>
 	  </tr>
 	</table> 
-</div>
 
 <% end %>

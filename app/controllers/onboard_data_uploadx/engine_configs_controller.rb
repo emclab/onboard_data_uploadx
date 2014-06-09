@@ -71,6 +71,36 @@ module OnboardDataUploadx
       @engine_configs = return_open_process(@engine_configs, find_config_const('engine_config_wf_final_state_string', 'onboard_data_uploadx'))  # ModelName_wf_final_state_string
     end
     
+    def mass_onboard
+      #index()
+      @title = t('Select Engine Configs for Onboard')
+      @engine_configs =  params[:onboard_data_uploadx_engine_configs][:model_ar_r]
+      @engine_configs = @engine_configs.where(:engine_id => eval(OnboardDataUploadx.engine_ids_belong_to_a_project)) if @project_id
+      @engine_configs = @engine_configs.where('onboard_data_uploadx_engine_configs.engine_id = ?', @engine.id) if @engine
+      @engine_configs = @engine_configs.where('TRIM(onboard_data_uploadx_engine_configs.argument_name) = ?', @argument_name) if @argument_name.present?
+      
+    end
+    
+    def mass_onboard_result
+      project_id = params[:save].keys[0]
+      params['id_array'].each do |id|
+        base = OnboardDataUploadx::EngineConfig.find_by_id(id) 
+        engine = OnboardDataUploadx.engine_class.find_by_id(base.engine_id)  
+       
+        onboard_item = OnboardDataUploadx.onboard_engine_config_class.new
+        onboard_item.engine_config_id = id
+        onboard_item.engine_id = engine.id
+        onboard_item.project_id = project_id
+        onboard_item.last_updated_by_id = session[:user_id]
+        begin
+          onboard_item.save
+        rescue => e
+          flash[:notice] = 'Base#=' + id.to_s  + ',' + e.message
+        end
+      end unless params['id_array'].blank?
+      redirect_to  SUBURI + "/view_handler?index=1&url=#{SUBURI + CGI::escape(eval(OnboardDataUploadx.onboard_engine_config_index_path))}"
+    end
+    
     protected
     def load_record
       @project_id = params[:project_id].to_i if params[:project_id].present?

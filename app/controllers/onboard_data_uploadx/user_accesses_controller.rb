@@ -72,6 +72,44 @@ module OnboardDataUploadx
       @user_accesses = return_open_process(@user_accesses, find_config_const('user_access_wf_final_state_string', 'onboard_data_uploadx'))  # ModelName_wf_final_state_string
     end
     
+    def engine_for_mass_onboard
+      @title = t('Select Engines for Onboard')
+      @engines = eval(OnboardDataUploadx.engine_ids_belong_to_a_project) if @project_id #engine_id
+      @engines = OnboardDataUploadx.engine_class.where(:id => @engines).order('name')
+      redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Select engine(s) for onboard") if @engines.blank?
+    end
+    
+    def mass_onboard
+      @title = t('Onboard User Access')
+      @project_id = params[:save].keys[0]
+      @roles = OnboardDataUploadx.project_misc_definition_class.where(:project_id => @project_id).where(:definition_category => 'role_definition').order('ranking_index')
+      @engine_ids_array = params[:id_array]
+      redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Select access for onboard") if @engine_ids_array.blank?
+    end
+    
+    def mass_onboard_result
+      #@title = t('Onboard User Access')
+      project_id = params[:save].keys[0]
+      params['ids'].each do |id|  #ids passed in as a string of 'user_access_id, role_id'
+        id = id.split(',')
+        base = OnboardDataUploadx::UserAccess.find_by_id(id[0].to_i)
+        engine = OnboardDataUploadx.engine_class.find_by_id(base.engine_id)
+
+        onboard_item = OnboardDataUploadx.onboard_user_access_class.new
+        onboard_item.user_access_id = id[0].to_i
+        onboard_item.role_definition_id = id[1].to_i
+        onboard_item.engine_id = engine.id
+        onboard_item.project_id = project_id
+        onboard_item.last_updated_by_id = session[:user_id]
+        begin
+          onboard_item.save
+        rescue => e
+          flash[:notice] = 'Base#=' + id[0]  + ',' + e.message
+        end
+      end unless params['ids'].blank?
+      redirect_to  SUBURI + "/view_handler?index=1&url=#{SUBURI + CGI::escape(eval(OnboardDataUploadx.onboard_user_access_index_path))}"
+    end
+    
     protected
     def load_record
       @project_id = params[:project_id].to_i if params[:project_id].present?

@@ -111,3 +111,5 @@ zh-CN:
   Are you sure to decommission? : '确定退出？'
   Are you sure to rewind? : '确定重新审批？'
   Engine Config Info : 'Engine参数信息'
+  Select access for onboard : '选择初始化数据'
+  Select config(s) for onboard : '选择初始化数据'

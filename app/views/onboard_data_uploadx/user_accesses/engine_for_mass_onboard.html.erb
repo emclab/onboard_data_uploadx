@@ -1,0 +1,26 @@
+<%=t('# of engines')%>=<%=@engines.count if @engines %>
+<%= form_tag mass_onboard_user_accesses_path, :method => :put do %>
+<table class="table table-striped">
+  <tr>
+  	 <th></th>
+     <th><%= t('Engine Name') %></th>
+     <th><%= t('Engine Desp') %></th>
+  </tr>
+
+<% @engines.each do |r| %>
+  <tr>
+    <td><%= check_box_tag 'id_array[]', r.id %></td>
+    <td><%= r.name %></td>
+    <td><%= r.module_desp[0..60] %></td>
+  </tr>
+<% end %>
+   <table class="table table-striped">
+	  <tr>
+	    <th>
+  		  <%= link_to t('Back'), SUBURI + "/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
+  		  <%= submit_tag t('Save') ,:name => "save[#{@project_id}]", :class => BUTTONS_CLS['action'] %>
+  	    </th>
+	  </tr>
+	</table> 
+
+<% end %>

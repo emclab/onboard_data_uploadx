@@ -1,0 +1,39 @@
+<div id="main_body">
+<% if @view_in_config && @erb_code %>
+<%= render inline: ERB.new(@erb_code).result(binding) %>
+<% else %>
+
+<h1><%=@title %></h1>
+<%=t('# of records')%>=<%=@engine_configs.count if @engine_configs %>
+<%= form_tag mass_onboard_result_engine_configs_path, :method => :put do %>
+<table class="table table-striped">
+  <tr>
+  	 <th></th>
+     <th><%= t('Engine Name') %></th>
+     <th><%= t('Argument Desp') %></th>
+     <th><%= t('Argument Name') %></th>
+     <th><%= t('Argument Value') %></th>
+  </tr>
+
+<% @engine_configs.each do |r| %>
+  <tr>
+    <td><%= check_box_tag 'id_array[]', r.id %></td>
+    <td><%= OnboardDataUploadx.engine_class.find_by_id(r.engine_id).name %></td>
+    <td><%= r.argument_desp[0..60] %></td>
+    <td><%= r.argument_name %></td>
+    <td><%= r.argument_value[0..40] %></td>                       
+  </tr>
+<% end %>
+   <table class="table table-striped">
+	  <tr>
+	    <th>
+  		  <%= link_to t('Back'), SUBURI + "/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
+  		  <%= submit_tag t('Save') ,:name => "save[#{@project_id}]", :class => BUTTONS_CLS['action'] %>
+  	    </th>
+	  </tr>
+	</table> 
+
+<% end %>
+<% end %>
+</div>
+

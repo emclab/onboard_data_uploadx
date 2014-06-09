@@ -1,0 +1,53 @@
+<div id="main_body">
+<% if @view_in_config && @erb_code %>
+<%= render inline: ERB.new(@erb_code).result(binding) %>
+<% else %>
+
+<h1><%=@title %></h1>
+<%=t('# of records')%>=<%=(OnboardDataUploadx::UserAccess.where(:engine_id => @engine_ids_array).size * @roles.count).to_i if @engine_ids_array && @roles %>
+<%= form_tag mass_onboard_result_user_accesses_path, :method => :put do %>
+<table class="table table-striped">
+  <tr>
+  	 <th></th>
+     <th><%= t('Engine Name') %></th>
+     <th><%= t('Role') %></th>
+     <th><%= t('Access Desp') %></th>
+     <th><%= t('Action') %></th>
+     <th><%= t('Resource') %></th>
+     <th><%= t('SQL Code') %></th>
+     <th><%= t('Masked Attrs') %></th>
+     <th><%= t('Rank') %></th>
+  </tr>
+
+<% @engine_ids_array.each do |rid| %>
+  <% user_accesses = OnboardDataUploadx::UserAccess.where(:engine_id => rid).order('resource, action') %>
+  <% user_accesses.each do |ua| %>
+    <% @roles.each do |role| %>
+      <tr>
+        <td><%= check_box_tag 'ids[]', [ua.id,role.ranking_index].join(',') %></td>
+        <td><%= OnboardDataUploadx.engine_class.find_by_id(rid).name %></td>
+        <td><%= role.name %></td>
+        <td><%= ua.access_desp[0..60] %></td>
+        <td><%= ua.action %></td>
+        <td><%= ua.resource %></td> 
+        <td><%= ua.sql_code %></td> 
+        <td><%= ua.masked_attrs %></td> 
+        <td><%= ua.rank %></td>                        
+      </tr>
+    <% end %>
+  <<% end if user_accesses %>>
+<% end %>
+   <table class="table table-striped">
+	  <tr>
+	    <th>
+  		  <%= link_to t('Back'), SUBURI + "/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
+  		  <%= submit_tag t('Save') ,:name => "save[#{@project_id}]", :class => BUTTONS_CLS['action'] %>
+  	    </th>
+	  </tr>
+	</table> 
+
+<% end %>
+
+<% end %>
+</div>
+
