@@ -56,6 +56,7 @@ module OnboardDataUploadx
     validates :engine_id, :presence => true, :numericality => {:only_integer => true, :greater_than => 0}
     validates :action, :uniqueness => {:scope => [:resource, :sql_code, :masked_attrs], :case_sensitive => false, :message => I18n.t('Duplicate Action')} 
     validates :rank, :numericality => {:only_integer => true}, :if => 'rank.present?'
+    validates :access_desp, :presence => true, :if => 'sql_code.present?'
     validate :dynamic_validate 
     
     def dynamic_validate
