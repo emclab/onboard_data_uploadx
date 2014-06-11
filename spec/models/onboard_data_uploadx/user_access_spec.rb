@@ -7,9 +7,14 @@ module OnboardDataUploadx
       c.should be_valid
     end
     
-    it "should take nil argument desp" do
-      c = FactoryGirl.build(:onboard_data_uploadx_user_access, :access_desp => nil)
+    it "should take nil access desp when sql code is nil" do
+      c = FactoryGirl.build(:onboard_data_uploadx_user_access, :access_desp => nil, :sql_code => nil)
       c.should be_valid
+    end
+    
+    it "should reject nil access desp when sql code is present" do
+      c = FactoryGirl.build(:onboard_data_uploadx_user_access, :access_desp => nil, :sql_code => "nil")
+      c.should_not be_valid
     end
     
     it "should reject dup action when resource, sql code and masked attrs are the same" do

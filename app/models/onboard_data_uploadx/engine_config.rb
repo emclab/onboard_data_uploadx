@@ -1,6 +1,7 @@
 module OnboardDataUploadx
   require 'workflow'
   class EngineConfig < ActiveRecord::Base
+    self.primary_key = :id  #fix update error in production
     include Workflow
     workflow_column :wf_state
     
