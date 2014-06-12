@@ -47,22 +47,27 @@ module OnboardDataUploadx
     end
 
     def update
-        @search_stat_config = OnboardDataUploadx::SearchStatConfig.find_by_id(params[:id])
-        @search_stat_config.last_updated_by_id = session[:user_id]
-        if @search_stat_config.update_attributes(params[:search_stat_config], :as => :role_update)
-          redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Updated!")
-        else
-          flash[:notice] = t('Data Error. Not Updated!')
-          @engines = OnboardDataUploadx.engine_class.where(active: true).order('name')
-          @erb_code = find_config_const('search_stat_config_edit_view', 'onboard_data_uploadx')
-          render 'edit'
-        end
+      @search_stat_config = OnboardDataUploadx::SearchStatConfig.find_by_id(params[:id])
+      @search_stat_config.last_updated_by_id = session[:user_id]
+      if @search_stat_config.update_attributes(params[:search_stat_config], :as => :role_update)
+        redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Updated!")
+      else
+        flash[:notice] = t('Data Error. Not Updated!')
+        @engines = OnboardDataUploadx.engine_class.where(active: true).order('name')
+        @erb_code = find_config_const('search_stat_config_edit_view', 'onboard_data_uploadx')
+        render 'edit'
+      end
     end
 
     def show
       @title = t('Search/Stat Config Info')
       @search_stat_config = OnboardDataUploadx::SearchStatConfig.find_by_id(params[:id])
       @erb_code = find_config_const('search_stat_config_show_view', 'onboard_data_uploadx')
+    end
+    
+    def destroy  
+      OnboardDataUploadx::SearchStatConfig.delete(params[:id].to_i)
+      redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Deleted!")
     end
     
     def list_open_process  

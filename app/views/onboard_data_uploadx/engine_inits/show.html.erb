@@ -107,6 +107,8 @@
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
   		  <%= link_to t('New Log'), SUBURI + commonx.new_log_path(:resource_id => @engine_init.id, :resource_name => params[:controller], :subaction => 'engine_init', :format => :js), :remote => true, 
                           :id => 'new_log_link', :class => BUTTONS_CLS['action'] if has_action_right?('create_engine_init', 'commonx/logs') %>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  		  <%= link_to t('Delete'), engine_init_path(@engine_init), :method => :delete, :confirm => 'Delete the record?', :class => BUTTONS_CLS['action'] if has_action_right?('destroy', params[:controller], @engine_init) %>
    		</th>
 	  </tr>
 	</table> 

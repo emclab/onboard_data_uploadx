@@ -48,22 +48,27 @@ module OnboardDataUploadx
     end
 
     def update
-        @engine_config = OnboardDataUploadx::EngineConfig.find_by_id(params[:id])
-        @engine_config.last_updated_by_id = session[:user_id]
-        if @engine_config.update_attributes(params[:engine_config], :as => :role_update)
-          redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Updated!")
-        else
-          flash[:notice] = t('Data Error. Not Updated!')
-          @engines = OnboardDataUploadx.engine_class.where(active: true).order('name')
-          @erb_code = find_config_const('engine_config_edit_view', 'onboard_data_uploadx')
-          render 'edit'
-        end
+      @engine_config = OnboardDataUploadx::EngineConfig.find_by_id(params[:id])
+      @engine_config.last_updated_by_id = session[:user_id]
+      if @engine_config.update_attributes(params[:engine_config], :as => :role_update)
+        redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Updated!")
+      else
+        flash[:notice] = t('Data Error. Not Updated!')
+        @engines = OnboardDataUploadx.engine_class.where(active: true).order('name')
+        @erb_code = find_config_const('engine_config_edit_view', 'onboard_data_uploadx')
+        render 'edit'
+      end
     end
 
     def show
       @title = t('Engine Config Info')
       @engine_config = OnboardDataUploadx::EngineConfig.find_by_id(params[:id])
       @erb_code = find_config_const('engine_config_show_view', 'onboard_data_uploadx')
+    end
+    
+    def destroy  
+      OnboardDataUploadx::EngineConfig.delete(params[:id].to_i)
+      redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Deleted!")
     end
     
     def list_open_process  

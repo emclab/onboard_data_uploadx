@@ -118,6 +118,8 @@
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
   		  <%= link_to t('New Log'), SUBURI + commonx.new_log_path(:resource_id => @user_access.id, :resource_name => params[:controller], :subaction => 'user_access', :format => :js), :remote => true, 
                           :id => 'new_log_link', :class => BUTTONS_CLS['action'] if has_action_right?('create_user_access', 'commonx/logs') %>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  		  <%= link_to t('Delete'), user_access_path(@user_access), :method => :delete, :confirm => I18n.t('Delete the record?'), :class => BUTTONS_CLS['action'] if has_action_right?('destroy', params[:controller], @user_access) %>
    		</th>
 	  </tr>
 	</table> 

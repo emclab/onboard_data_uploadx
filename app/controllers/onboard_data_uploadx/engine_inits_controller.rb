@@ -65,6 +65,11 @@ module OnboardDataUploadx
       @erb_code = find_config_const('engine_init_show_view', 'onboard_data_uploadx')
     end
     
+    def destroy  
+      OnboardDataUploadx::EngineInit.delete(params[:id].to_i)
+      redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Deleted!")
+    end
+    
     def list_open_process  
       index()
       @engine_inits = return_open_process(@engine_inits, find_config_const('engine_init_wf_final_state_string', 'onboard_data_uploadx'))  # ModelName_wf_final_state_string

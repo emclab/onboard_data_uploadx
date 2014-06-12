@@ -141,6 +141,8 @@
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
   		  <%= link_to t('New Log'), SUBURI + commonx.new_log_path(:resource_id => @search_stat_config.id, :resource_name => params[:controller], :subaction => 'search_stat_config', :format => :js), :remote => true, 
                           :id => 'new_log_link', :class => BUTTONS_CLS['action'] if has_action_right?('create_search_stat_config', 'commonx/logs') %>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  		  <%= link_to t('Delete'), search_stat_config_path(@search_stat_config), :method => :delete, :confirm => 'Delete the record?', :class => BUTTONS_CLS['action'] if has_action_right?('destroy', params[:controller], @search_stat_config) %>
    		</th>
 	  </tr>
 	</table> 
