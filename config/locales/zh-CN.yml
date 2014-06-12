@@ -114,3 +114,5 @@ zh-CN:
   Select access for onboard : '选择初始化数据'
   Select config(s) for onboard : '选择初始化数据'
   Delete the record? : '删除？'
+  Engines : 'Rails模块'
+  Action : '动作'

@@ -76,20 +76,25 @@ module OnboardDataUploadx
       @engine_configs = return_open_process(@engine_configs, find_config_const('engine_config_wf_final_state_string', 'onboard_data_uploadx'))  # ModelName_wf_final_state_string
     end
     
+    def engine_for_mass_onboard
+      @title = t('Select Engines for Onboard')
+      @engines = eval(OnboardDataUploadx.engine_ids_belong_to_a_project) if @project_id #engine_id
+      @engines = OnboardDataUploadx.engine_class.where(:id => @engines).order('name')
+      redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Select engine(s) for onboard") if @engines.blank?
+    end
+    
     def mass_onboard
       #index()
-      @title = t('Select Engine Configs for Onboard')
-      @engine_configs =  params[:onboard_data_uploadx_engine_configs][:model_ar_r]
-      @engine_configs = @engine_configs.where(:engine_id => eval(OnboardDataUploadx.engine_ids_belong_to_a_project)) if @project_id
-      @engine_configs = @engine_configs.where('onboard_data_uploadx_engine_configs.engine_id = ?', @engine.id) if @engine
-      @engine_configs = @engine_configs.where('TRIM(onboard_data_uploadx_engine_configs.argument_name) = ?', @argument_name) if @argument_name.present?
-      
+      @title = t('Select Configs for Onboard')
+      @project_id = params[:save].keys[0]
+      @engine_ids_array = params[:id_array]
+      redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Select config for onboard") if @engine_ids_array.blank?
     end
     
     def mass_onboard_result
       project_id = params[:save].keys[0]
-      params['id_array'].each do |id|
-        base = OnboardDataUploadx::EngineConfig.find_by_id(id) 
+      params['ids'].each do |id|  #ids passed in as 'engine_config_id'
+        base = OnboardDataUploadx::EngineConfig.find_by_id(id)
         engine = OnboardDataUploadx.engine_class.find_by_id(base.engine_id)  
        
         onboard_item = OnboardDataUploadx.onboard_engine_config_class.new
@@ -102,7 +107,7 @@ module OnboardDataUploadx
         rescue => e
           flash[:notice] = 'Base#=' + id.to_s  + ',' + e.message
         end
-      end unless params['id_array'].blank?
+      end unless params['ids'].blank?
       redirect_to  SUBURI + "/view_handler?index=1&url=#{SUBURI + CGI::escape(eval(OnboardDataUploadx.onboard_engine_config_index_path))}"
     end
     

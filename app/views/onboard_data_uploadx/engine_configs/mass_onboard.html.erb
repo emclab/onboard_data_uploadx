@@ -4,7 +4,7 @@
 <% else %>
 
 <h1><%=@title %></h1>
-<%=t('# of records')%>=<%=@engine_configs.count if @engine_configs %>
+<%=t('# of records')%>=<%=OnboardDataUploadx::EngineConfig.where(:engine_id => @engine_ids_array).count if @engine_ids_array %>
 <%= form_tag mass_onboard_result_engine_configs_path, :method => :put do %>
 <table class="table table-striped">
   <tr>
@@ -15,14 +15,17 @@
      <th><%= t('Argument Value') %></th>
   </tr>
 
-<% @engine_configs.each do |r| %>
-  <tr>
-    <td><%= check_box_tag 'id_array[]', r.id %></td>
-    <td><%= OnboardDataUploadx.engine_class.find_by_id(r.engine_id).name %></td>
-    <td><%= r.argument_desp[0..60] %></td>
-    <td><%= r.argument_name %></td>
-    <td><%= r.argument_value[0..40] %></td>                       
-  </tr>
+<% @engine_ids_array.each do |rid| %>
+  <% engine_configs = OnboardDataUploadx::EngineConfig.where(:engine_id => rid).order('argument_name, id') %> 
+  <% engine_configs.each do |r| %>
+    <tr>
+      <td><%= check_box_tag 'ids[]', r.id %></td>
+      <td><%= OnboardDataUploadx.engine_class.find_by_id(r.engine_id).name %></td>
+      <td><%= r.argument_desp[0..60] if r.argument_desp %></td>
+      <td><%= r.argument_name %></td>
+      <td><%= r.argument_value[0..40] if r.argument_value %></td>                       
+    </tr>
+  <% end if engine_configs %>
 <% end %>
    <table class="table table-striped">
 	  <tr>

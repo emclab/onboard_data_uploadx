@@ -40,10 +40,10 @@ module OnboardDataUploadx
                      :wf_comment, :id_noupdate, :wf_state_noupdate, :global_noupdate,
                     :as => :role_update
     
-    attr_accessor :start_date_s, :end_date_s, :submitted_by_id_s, :commissioned_s, :decommissioned_s, :tested_s, :reviewed_s, :argument_name_s, :engine_name_s, 
+    attr_accessor :start_date_s, :end_date_s, :submitted_by_id_s, :commissioned_s, :decommissioned_s, :tested_s, :reviewed_s, :argument_name_s, :engine_id_s, 
                   :argument_desp_s, :commissioned_by_id_s, :decommissioned_by_id_s, :tested_by_id_s, :reviewed_by_id_s
 
-    attr_accessible :start_date_s, :end_date_s, :submitted_by_id_s, :commissioned_s, :decommissioned_s, :tested_s, :reviewed_s, :argument_name_s, :engine_name_s, 
+    attr_accessible :start_date_s, :end_date_s, :submitted_by_id_s, :commissioned_s, :decommissioned_s, :tested_s, :reviewed_s, :argument_name_s, :engine_id_s, 
                     :argument_desp_s, :commissioned_by_id_s, :decommissioned_by_id_s, :tested_by_id_s, :reviewed_by_id_s,
                     :as => :role_search_stats
     

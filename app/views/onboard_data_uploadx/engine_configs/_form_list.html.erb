@@ -56,8 +56,12 @@
 	  <tr>
 	    <th>
   		  <%= link_to t('Back'), SUBURI + "/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
-  		 &nbsp;<%= link_to t('New Engine Config'), SUBURI + "/view_handler?index=1&url=#{new_engine_config_path}", :class => BUTTONS_CLS['action'] if has_action_right?('create', params[:controller]) %>
-  		 &nbsp;<%= link_to t('Mass Onboard'), SUBURI + "/view_handler?index=1&url=#{mass_onboard_engine_configs_path(project_id: @project_id)}", :class => BUTTONS_CLS['action'] if @project_id && has_action_right?('create', 'onboard_datax/onboard_engine_configs') %>
+  	   	  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  		  <%= link_to t('New Engine Config'), SUBURI + "/view_handler?index=1&url=#{new_engine_config_path}", :class => BUTTONS_CLS['action'] if has_action_right?('create', params[:controller]) %>
+  		  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    	  <%= link_to t('Search'), SUBURI + "/authentify/view_handler?index=1&url=#{search_engine_configs_path}", :class => BUTTONS_CLS['action'] if has_action_right?('search', params[:controller]) %>
+  		  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  		  <%= link_to t('Choose Engine for Onboard'), SUBURI + "/view_handler?index=1&url=#{engine_for_mass_onboard_engine_configs_path(project_id: @project_id)}", :class => BUTTONS_CLS['action'] if @project_id && has_action_right?('create', 'onboard_datax/onboard_engine_configs') %>
   	    </th>
 	  </tr>
 	</table> 

@@ -3,7 +3,8 @@ OnboardDataUploadx::Engine.routes.draw do
   resources :engine_configs do
     collection do
       get :search
-      get :mass_onboard
+      get :engine_for_mass_onboard
+      put :mass_onboard
       put :search_results  
       put :mass_onboard_result
     end

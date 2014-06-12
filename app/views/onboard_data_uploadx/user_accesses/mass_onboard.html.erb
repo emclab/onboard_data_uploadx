@@ -27,7 +27,7 @@
         <td><%= check_box_tag 'ids[]', [ua.id,role.ranking_index].join(',') %></td>
         <td><%= OnboardDataUploadx.engine_class.find_by_id(rid).name %></td>
         <td><%= role.name %></td>
-        <td><%= ua.access_desp[0..60] %></td>
+        <td><%= ua.access_desp[0..60] if ua.access_desp.present? %></td>
         <td><%= ua.action %></td>
         <td><%= ua.resource %></td> 
         <td><%= ua.sql_code %></td> 
@@ -35,7 +35,7 @@
         <td><%= ua.rank %></td>                        
       </tr>
     <% end %>
-  <<% end if user_accesses %>>
+  <% end if user_accesses %>
 <% end %>
    <table class="table table-striped">
 	  <tr>
