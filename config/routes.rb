@@ -4,8 +4,8 @@ OnboardDataUploadx::Engine.routes.draw do
     collection do
       get :search
       get :engine_for_mass_onboard
-      put :mass_onboard
-      put :search_results  
+      get :mass_onboard
+      get :search_results  
       put :mass_onboard_result
     end
     
@@ -37,8 +37,8 @@ OnboardDataUploadx::Engine.routes.draw do
     collection do
       get :search
       get :engine_for_mass_onboard
-      put :search_results  
-      put :mass_onboard
+      get :search_results  
+      get :mass_onboard
       put :mass_onboard_result
     end
     
@@ -69,7 +69,7 @@ OnboardDataUploadx::Engine.routes.draw do
   resources :engine_inits do
     collection do
       get :search
-      put :search_results   
+      get :search_results   
     end
     
 #=begin    
@@ -99,7 +99,7 @@ OnboardDataUploadx::Engine.routes.draw do
   resources :search_stat_configs do
     collection do
       get :search
-      put :search_results  
+      get :search_results  
     end
     
 #=begin    
