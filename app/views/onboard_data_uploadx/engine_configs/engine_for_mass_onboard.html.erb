@@ -1,5 +1,5 @@
 <%=t('# of engines')%>=<%=@engines.count if @engines %>
-<%= form_tag mass_onboard_engine_configs_path, :method => :get do %>
+<%= form_tag mass_onboard_engine_configs_path, :method => :put do %>
 <table class="table table-striped">
   <tr>
   	 <th></th>
