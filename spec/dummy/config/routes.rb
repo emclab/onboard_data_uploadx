@@ -8,6 +8,8 @@ Rails.application.routes.draw do
   mount BizWorkflowx::Engine => '/biz_wf'
   mount SwModuleInfox::Engine => '/sw_module'
   mount ResourceAllocx::Engine => '/res_alloc'
+  mount InfoServiceProjectx::Engine => '/project'
+  mount Kustomerx::Engine => '/customer'
   
   resource :session
   

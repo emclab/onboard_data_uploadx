@@ -4,7 +4,8 @@
 
 <h1><%=@title %></h1>
 <div class="pagination"><%= will_paginate models %></div>
-<%=t('# of records')%>=<%=models.count%>
+<p><%=t('Project')%>=<%=@project.name if @project %></p>
+<%=t('# of records')%>=<%=models.count if models %>
 <table class="table table-striped">
   <tr>
     <th>#</th>

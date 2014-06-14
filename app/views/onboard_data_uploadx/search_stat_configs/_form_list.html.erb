@@ -3,6 +3,8 @@
 <% else %>
 
 <h1><%=@title %></h1>
+<p><%=t('Project')%>=<%=@project.name if @project %></p>
+<%=t('# of records')%>=<%=models.count if models %>
 <div class="pagination"><%= will_paginate models %></div>
 <table class="table table-striped">
   <tr>

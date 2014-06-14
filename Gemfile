@@ -16,6 +16,8 @@ gem 'state_machine_logx', :path => '../state_machine_logx'
 gem 'biz_workflowx', :path => '../biz_workflowx'
 gem 'sw_module_infox', :path => '../sw_module_infox'
 gem 'resource_allocx', :path => '../resource_allocx'
+gem 'info_service_projectx', :path => '../info_service_projectx'
+gem 'kustomerx', :path => '../kustomerx'
 
 # Declare any dependencies that are still in development here instead of in
 # your gemspec. These might include edge Rails or gems from your path or

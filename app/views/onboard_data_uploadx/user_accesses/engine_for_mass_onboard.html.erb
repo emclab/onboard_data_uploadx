@@ -1,5 +1,6 @@
+<p><%=t('Project')%>=<%=@project.name if @project %></p>
 <%=t('# of engines')%>=<%=@engines.count if @engines %>
-<%= form_tag mass_onboard_user_accesses_path, :method => :put do %>
+<%= form_tag mass_onboard_user_accesses_path, :method => :get do %>
 <table class="table table-striped">
   <tr>
   	 <th></th>

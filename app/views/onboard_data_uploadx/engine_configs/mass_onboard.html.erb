@@ -4,6 +4,7 @@
 <% else %>
 
 <h1><%=@title %></h1>
+<p><%=t('Project')%>=<%=@project.name if @project %></p>
 <%=t('# of records')%>=<%=OnboardDataUploadx::EngineConfig.where(:engine_id => @engine_ids_array).count if @engine_ids_array %>
 <%= form_tag mass_onboard_result_engine_configs_path, :method => :put do %>
 <table class="table table-striped">

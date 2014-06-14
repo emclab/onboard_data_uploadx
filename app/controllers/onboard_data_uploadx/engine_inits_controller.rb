@@ -78,6 +78,7 @@ module OnboardDataUploadx
     protected
     def load_record
       @project_id = params[:project_id].to_i if params[:project_id].present?
+      @project = OnboardDataUploadx.project_class.find_by_id(@project_id) if @project_id
       @engine = OnboardDataUploadx.engine_class.find_by_id(params[:engine_id].to_i) if params[:engine_id].present?
       @engine = OnboardDataUploadx.engine_class.find_by_id(OnboardDataUploadx::EngineInit.find_by_id(params[:id]).engine_id) if params[:id].present?      
     end

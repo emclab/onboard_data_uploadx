@@ -87,6 +87,7 @@ module OnboardDataUploadx
       #index()
       @title = t('Select Configs for Onboard')
       @project_id = params[:save].keys[0]
+      @project = OnboardDataUploadx.project_class.find_by_id(@project_id)
       @engine_ids_array = params[:id_array]
       redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Select config for onboard") if @engine_ids_array.blank?
     end
@@ -114,6 +115,7 @@ module OnboardDataUploadx
     protected
     def load_record
       @project_id = params[:project_id].to_i if params[:project_id].present?
+      @project = OnboardDataUploadx.project_class.find_by_id(@project_id)
       @engine = OnboardDataUploadx.engine_class.find_by_id(params[:engine_id].to_i) if params[:engine_id].present?
       @engine = OnboardDataUploadx.engine_class.find_by_id(OnboardDataUploadx::EngineConfig.find_by_id(params[:id]).engine_id) if params[:id].present?
       @argument_name = params[:argument_name].strip if params[:argument_name].present?

@@ -4,8 +4,8 @@ OnboardDataUploadx::Engine.routes.draw do
     collection do
       get :search
       get :engine_for_mass_onboard
-      put :mass_onboard
       get :search_results  
+      get :mass_onboard
       put :mass_onboard_result
     end
     
@@ -38,7 +38,7 @@ OnboardDataUploadx::Engine.routes.draw do
       get :search
       get :engine_for_mass_onboard
       get :search_results  
-      put :mass_onboard
+      get :mass_onboard
       put :mass_onboard_result
     end
     
