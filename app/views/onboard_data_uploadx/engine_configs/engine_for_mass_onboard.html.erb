@@ -1,3 +1,8 @@
+<div id="main_body">
+<% if @view_in_config && @erb_code %>
+<%= render inline: @erb_code %>
+<% else %>
+
 <p><%=t('Project')%>=<%=@project.name if @project %></p>
 <%=t('# of engines')%>=<%=@engines.count if @engines %>
 <%= form_tag mass_onboard_engine_configs_path, :method => :get do %>
@@ -25,3 +30,6 @@
 	</table> 
 
 <% end %>
+
+<% end %>
+</div>
