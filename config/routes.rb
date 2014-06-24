@@ -1,6 +1,9 @@
 OnboardDataUploadx::Engine.routes.draw do
   
   resources :engine_configs do
+    member do
+      get :copy
+    end
     collection do
       get :search
       get :engine_for_mass_onboard
@@ -34,6 +37,9 @@ OnboardDataUploadx::Engine.routes.draw do
   end
   
   resources :user_accesses do
+    member do
+      get :copy
+    end
     collection do
       get :search
       get :engine_for_mass_onboard
@@ -67,9 +73,12 @@ OnboardDataUploadx::Engine.routes.draw do
   end
 
   resources :engine_inits do
+    member do
+      get :copy
+    end
     collection do
       get :search
-      get :search_results   
+      get :search_results  
     end
     
 #=begin    
@@ -97,6 +106,9 @@ OnboardDataUploadx::Engine.routes.draw do
   end
   
   resources :search_stat_configs do
+    member do
+      get :copy
+    end
     collection do
       get :search
       get :search_results  

@@ -24,6 +24,7 @@
     <th></th>
     <th></th>
     <th></th>
+    <th></th>
  
   </tr>
 
@@ -49,6 +50,7 @@
     <td><%= link_to t('Decommission'), SUBURI + "/authentify/view_handler?index=1&url=#{CGI.escape event_action_engine_config_path(r, :wf_event => 'decommission', :resource_id => r.id)}", :confirm => 'Are you sure to decommission?', :class => BUTTONS_CLS['action']  if r.wf_state.present? && r.wf_state == 'commissioned' && has_action_right?('decommission', params[:controller], r) %></td>
     <td><%= link_to t('Rewind'), SUBURI + "/authentify/view_handler?index=1&url=#{CGI.escape event_action_engine_config_path(r, :wf_event => 'rewind', :resource_id => r.id)}", :confirm => 'Are you sure to rewind?', :class => BUTTONS_CLS['action']  if r.wf_state.present? && r.wf_state == 'commissioned' && has_action_right?('rewind', params[:controller], r) %></td>
     <td><%= link_to t('New Onboard Data'), SUBURI + "/view_handler?index=1&url=#{SUBURI + CGI.escape(onboard_datax.new_onboard_engine_config_path(project_id: @project_id, engine_id: r.engine_id, engine_config_id: r.id))}", :class => BUTTONS_CLS['action'] if @project_id && has_action_right?('create', 'onboard_datax/onboard_engine_configs', r) %></td>
+    <td><%= link_to t('Copy'), SUBURI + "/view_handler?index=1&url=#{copy_engine_config_path(r)}", :class => BUTTONS_CLS['action'] if has_action_right?('create', params[:controller], r) %></td>
     <td><%= link_to t('Edit'), SUBURI + "/view_handler?index=1&url=#{edit_engine_config_path(r)}", :class => BUTTONS_CLS['action'] if has_action_right?('update', params[:controller], r) %></td>
 
   </tr>

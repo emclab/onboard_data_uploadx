@@ -1,0 +1,20 @@
+<% if @view_in_config && @erb_code %>
+  <%= render inline: @erb_code %>
+  
+<% else %>
+<%= simple_form_for @engine_init do |f| %>    
+ 
+  <%= f.input :engine_id, :label => t('Engine Name'), :collection => @engines, :label_method => :name, :value_method => :id, :include_blank => true if @engine.blank? %> 
+  <%= f.input :engine_name, :label => t('Engine Name'), :input_html => {:value => @engine.name} if @engine.present? %> 
+  <%= f.input :engine_id, :as => :hidden, :input_html => {:value => @engine.id} if @engine.present? %>
+  <%= f.input :init_desp, :label => t('Init Desp'), :input_html => {:rows => 2, :value => @copy_from.init_desp} %> 
+  <%= f.input :file_name, :label => t('File Name'), :input_html => {:value => @copy_from.file_name} %>
+  <%= f.input :init_code, :label => t('Init Code'), :input_html => {:rows => 10, :value => @copy_from.init_code} %>   
+  
+  <%= link_to t('Back'), SUBURI + "/authentify/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
+  <%= f.button :submit, t('Save') , :class => BUTTONS_CLS['action'] %>  
+<% end %>  
+
+<% end %>
+
+

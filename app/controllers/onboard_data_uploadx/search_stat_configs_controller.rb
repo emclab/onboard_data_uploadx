@@ -70,6 +70,14 @@ module OnboardDataUploadx
       redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Deleted!")
     end
     
+    def copy
+      @title = t('Copy Search/Stat Config')
+      @search_stat_config = OnboardDataUploadx::SearchStatConfig.new
+      @copy_from = OnboardDataUploadx::SearchStatConfig.find_by_id(params[:id])
+      @engines = OnboardDataUploadx.engine_class.where(active: true).order('name')
+      @erb_code = find_config_const('search_stat_config_copy_view', 'onboard_data_uploadx')
+    end
+    
     def list_open_process  
       index()
       @search_stat_configs = return_open_process(@search_stat_configs, find_config_const('search_stat_config_wf_final_state_string', 'onboard_data_uploadx'))  # ModelName_wf_final_state_string
