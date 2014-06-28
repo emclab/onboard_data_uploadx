@@ -26,7 +26,7 @@
   <% user_accesses.each do |ua| %>
     <% @roles.each do |role| %>
       <tr>
-        <td><%= check_box_tag 'ids[]', [ua.id,role.ranking_index].join(',') %></td>
+        <td><%= check_box_tag 'ids[]', [ua.id,role.id].join(',') %></td>
         <td><%= OnboardDataUploadx.engine_class.find_by_id(rid).name %></td>
         <td><%= role.name %></td>
         <td><%= ua.access_desp[0..60] if ua.access_desp.present? %></td>
