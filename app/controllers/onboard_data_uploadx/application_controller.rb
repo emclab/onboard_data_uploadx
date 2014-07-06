@@ -9,7 +9,6 @@ module OnboardDataUploadx
     include BizWorkflowx::WfHelper
     
     before_filter :require_signin
-    before_filter :set_locale
     before_filter :max_pagination 
     before_filter :check_access_right 
     before_filter :load_session_variable, :only => [:new, :edit]  #for parent_record_id & parent_resource in check_access_right
