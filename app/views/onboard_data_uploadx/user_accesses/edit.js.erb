@@ -1,0 +1,7 @@
+<% if @module_info_id.present? %>
+  $('#user_access_module_action_id').empty();
+  $('#user_access_module_action_id').append('<option value=""></option>');
+  <% @module_actions.each do |r| %>
+    $('#user_access_module_action_id').append('<option value="<%=r.id%>"><%= "##{r.id},"+ ' ' + "#{r.name}," + ' ' + "#{r.data_resource.name}" %></option>');
+  <% end %>
+<% end %>

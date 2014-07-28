@@ -157,7 +157,7 @@ describe "LinkTests" do
       save_and_open_page
       task = FactoryGirl.create(:onboard_data_uploadx_engine_config, :last_updated_by_id => @u.id, :submitted_by_id => @u.id, :engine_id => @engine.id)
       visit engine_configs_path
-      save_and_open_page
+      #save_and_open_page
       page.should have_content('Engine Configs')
       page.should have_content('Initial State')  #for workflow
       page.should have_content('Submit Config Data')
@@ -165,43 +165,56 @@ describe "LinkTests" do
       #save_and_open_page
       page.should have_content('Edit Engine Config')
       #save_and_open_page
-      fill_in 'engine_config_argument_name', :with => '230'
+      fill_in 'engine_config_argument_name', :with => '230++'
       click_button "Save"
+      visit engine_configs_path
+      page.should have_content('230++')
       #bad data
       visit engine_configs_path
       click_link 'Edit'
-      fill_in 'engine_config_argument_desp', :with => nil
+      fill_in 'engine_config_argument_name', :with => nil
+      fill_in 'engine_config_argument_desp', :with => '230--'
       click_button "Save"
+      visit engine_configs_path
+      page.should_not have_content('230--')
       #save_and_open_page
       
       #show
       visit engine_configs_path
       #save_and_open_page
       click_link task.id.to_s
-      save_and_open_page
+      #save_and_open_page
       page.should have_content('Engine Config Info')
       
       #new
-      visit new_engine_config_path()
-      save_and_open_page
+      visit engine_configs_path()
+      click_link('New Engine Config')
+      #save_and_open_page
       page.should have_content('New Engine Config')
       select('myengine', :from => 'engine_config_engine_id')
-      fill_in 'engine_config_argument_desp', :with =>  '230'
+      fill_in 'engine_config_argument_name', :with =>  '230=='
       fill_in 'engine_config_brief_note', :with => 'for biz trip'
       click_button 'Save'
+      visit engine_configs_path
+      #save_and_open_page
+      page.should have_content('230==')
       #save_and_open_page
       #bad data
       visit new_engine_config_path()
       #fill_in 'engine_config_argument_name', :with => ''
-      fill_in 'engine_config_argument_desp', :with =>  '230'
+      fill_in 'engine_config_argument_desp', :with =>  '230^^'
       fill_in 'engine_config_brief_note', :with => 'for biz trip'
       click_button 'Save'
+      visit engine_configs_path
+      page.should_not have_content('230^^')
       #save_and_open_page
     end
     
     it "works for user access" do
       # Run the generator again with the --webrat flag if you want to use webrat methods/matchers
-      task = FactoryGirl.create(:onboard_data_uploadx_user_access, :submitted_by_id => @u.id, :engine_id => @engine.id)
+      data_res = FactoryGirl.create(:sw_module_infox_data_resource)
+      module_action = FactoryGirl.create(:sw_module_infox_module_action, :module_info_id => @engine.id, :data_resource_id => data_res.id)
+      task = FactoryGirl.create(:onboard_data_uploadx_user_access, :submitted_by_id => @u.id, :engine_id => @engine.id, :module_action_id => module_action.id)
       visit user_accesses_path
       save_and_open_page
       page.should have_content('User Accesses')
@@ -211,13 +224,19 @@ describe "LinkTests" do
       #save_and_open_page
       page.should have_content('Edit User Access')
       #save_and_open_page
-      fill_in 'user_access_resource', :with => '230'
+      fill_in 'user_access_resource', :with => '230++'
       click_button "Save"
+      visit user_accesses_path
+      #save_and_open_page
+      page.should have_content('230++')
       #bad data
       visit user_accesses_path
       click_link 'Edit'
       fill_in 'user_access_resource', :with => nil
+      fill_in 'user_access_action', :with => '230--'
       click_button "Save"
+      visit user_accesses_path
+      page.should_not have_content('230--')
       #save_and_open_page
       
       #show
@@ -228,22 +247,30 @@ describe "LinkTests" do
       page.should have_content('User Access Info')
       
       #new
-      visit new_user_access_path()
+      visit user_accesses_path(engine_id: @engine.id)
       #save_and_open_page
       page.should have_content('New User Access')
+      click_link 'New User Access'
+      save_and_open_page
       select('myengine', :from => 'user_access_engine_id')
-      fill_in 'user_access_action', :with => '2014-04-11'
+      select('#1, MyString,MyString', :from => 'user_access_module_action_id')
+      fill_in 'user_access_action', :with => '2014-04-11++'
       fill_in 'user_access_resource', :with =>  '230'
       fill_in 'user_access_access_desp', :with => 'for biz trip'
       click_button 'Save'
+      visit user_accesses_path
+      page.should have_content('2014-04-11++')
       #save_and_open_page
       #bad data
-      visit new_user_access_path()
+      visit user_accesses_path()
+      click_link 'New User Access'
       select('myengine', :from => 'user_access_engine_id')
       fill_in 'user_access_action', :with => ''
-      fill_in 'user_access_access_desp', :with =>  '230'
+      fill_in 'user_access_access_desp', :with =>  '230%%'
       fill_in 'user_access_resource', :with => 'for biz trip'
       click_button 'Save'
+      visit user_accesses_path
+      page.should_not have_content('230%%')
       #save_and_open_page
     end
     

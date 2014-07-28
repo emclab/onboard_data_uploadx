@@ -4,3 +4,10 @@ $(function() {
 	$( "#user_access_start_date_s" ).datepicker({dateFormat: 'yy-mm-dd'});
 	$( "#user_access_end_date_s" ).datepicker({dateFormat: 'yy-mm-dd'});
 });
+
+$(function (){
+	$('#user_access_engine_id').change(function(){
+      $.get(window.location, $('form').serialize(), null, "script");
+  	  return false;
+	});
+});

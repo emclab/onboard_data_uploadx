@@ -29,19 +29,19 @@ module OnboardDataUploadx
       end
     end
     attr_accessor  :wf_comment, :id_noupdate, :wf_state_noupdate, :wf_event, :last_updated_by_name, :engine_name, :engine_id_noupdate
-    attr_accessible :access_desp, :action, :brief_note, :masked_attrs, :rank, :resource, :sql_code, :wf_state, :tested, :engine_id,
+    attr_accessible :access_desp, :action, :brief_note, :masked_attrs, :rank, :resource, :sql_code, :wf_state, :tested, :engine_id, :module_action_id,
                     :as => :role_new
     attr_accessible :access_desp, :action, :brief_note, :commissioned, :commissioned_by_id, :commissioned_date, :decommissioned, :decommissioned_by_id, 
-                    :decommissioned_date, :last_updated_by_id, :masked_attrs, :rank, :resource, :reviewed, :reviewed_by_id, :sql_code, 
+                    :decommissioned_date, :last_updated_by_id, :masked_attrs, :rank, :resource, :reviewed, :reviewed_by_id, :sql_code, :module_action_id,
                     :submitted_by_id, :wf_state, :tested, :tested_by_id, :engine_name, :tested_date, :reviewed_date, :engine_id,
                     :wf_comment, :id_noupdate, :wf_state_noupdate,
                     :as => :role_update  
                     
     attr_accessor :start_date_s, :end_date_s, :submitted_by_id_s, :commissioned_s, :decommissioned_s, :tested_s, :reviewed_s, :action_s, :resource_s, 
-                  :access_desp_s, :commissioned_by_id_s, :decommissioned_by_id_s, :tested_by_id_s, :reviewed_by_id_s, :engine_id_s
+                  :access_desp_s, :commissioned_by_id_s, :decommissioned_by_id_s, :tested_by_id_s, :reviewed_by_id_s, :engine_id_s, :module_action_id_s
 
     attr_accessible :start_date_s, :end_date_s, :submitted_by_id_s, :commissioned_s, :decommissioned_s, :tested_s, :reviewed_s, :action_s, :resource_s, 
-                    :access_desp_s, :commissioned_by_id_s, :decommissioned_by_id_s, :tested_by_id_s, :reviewed_by_id_s, :engine_id_s,
+                    :access_desp_s, :commissioned_by_id_s, :decommissioned_by_id_s, :tested_by_id_s, :reviewed_by_id_s, :engine_id_s, :module_action_id_s,
                     :as => :role_search_stats 
     
     belongs_to :last_updated_by, :class_name => 'Authentify::User'
@@ -51,10 +51,12 @@ module OnboardDataUploadx
     belongs_to :reviewed_by, :class_name => 'Authentify::User'
     belongs_to :tested_by, :class_name => 'Authentify::User'  
     belongs_to :engine, :class_name => OnboardDataUploadx.engine_class.to_s
+    belongs_to :module_action, :class_name => OnboardDataUploadx.module_action_class.to_s
     
     validates :action, :resource, :presence => true
-    validates :engine_id, :presence => true, :numericality => {:only_integer => true, :greater_than => 0}
-    validates :action, :uniqueness => {:scope => [:resource, :sql_code, :masked_attrs], :case_sensitive => false, :message => I18n.t('Duplicate Action')} 
+    validates :engine_id, :module_action_id, :presence => true, :numericality => {:only_integer => true, :greater_than => 0}
+    validates :action, :uniqueness => {:scope => [:resource, :sql_code, :masked_attrs], :case_sensitive => false, :message => I18n.t('Duplicate Action')}
+    validates :module_action_id, :uniqueness => {:scope => [:engine_id, :sql_code, :masked_attrs], :message => I18n.t('Duplicate Action')} 
     validates :rank, :numericality => {:only_integer => true}, :if => 'rank.present?'
     validates :access_desp, :presence => true, :if => 'sql_code.present?'
     validate :dynamic_validate 

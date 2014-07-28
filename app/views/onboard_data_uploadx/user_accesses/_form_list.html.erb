@@ -59,7 +59,7 @@
 	    <th>
   		  <%= link_to t('Back'), SUBURI + "/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
   		  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  		  <%= link_to t('New User Access'), SUBURI + "/view_handler?index=1&url=#{new_user_access_path}", :class => BUTTONS_CLS['action'] if has_action_right?('create', params[:controller]) %>
+  		  <%= link_to t('New User Access'), SUBURI + "/view_handler?index=1&url=#{new_user_access_path()}", :class => BUTTONS_CLS['action'] if has_action_right?('create', params[:controller]) %>
   		  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     	  <%= link_to t('Search'), SUBURI + "/authentify/view_handler?index=1&url=#{search_user_accesses_path}", :class => BUTTONS_CLS['action'] if has_action_right?('search', params[:controller]) %>
   		  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

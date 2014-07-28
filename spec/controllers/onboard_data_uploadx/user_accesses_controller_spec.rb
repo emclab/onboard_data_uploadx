@@ -172,9 +172,9 @@ module OnboardDataUploadx
         session[:user_id] = @u.id
         session[:user_privilege] = Authentify::UserPrivilegeHelper::UserPrivilege.new(@u.id)
         q = FactoryGirl.create(:onboard_data_uploadx_user_access, :created_at => 50.days.ago, :wf_state => 'initial_state')  #created too long ago to show
-        q1 = FactoryGirl.create(:onboard_data_uploadx_user_access, :wf_state => 'reviewing', :action => 'new')
-        q2 = FactoryGirl.create(:onboard_data_uploadx_user_access, :wf_state => 'initial_state', :action => 'new+')
-        q3 = FactoryGirl.create(:onboard_data_uploadx_user_access, :wf_state => 'decommissioned', :action => 'new++')  #wf_state can't be what was defined.
+        q1 = FactoryGirl.create(:onboard_data_uploadx_user_access, :wf_state => 'reviewing', :action => 'new', :sql_code => 'new')
+        q2 = FactoryGirl.create(:onboard_data_uploadx_user_access, :wf_state => 'initial_state', :action => 'new+', :sql_code => 'new+')
+        q3 = FactoryGirl.create(:onboard_data_uploadx_user_access, :wf_state => 'decommissioned', :action => 'new++', :sql_code => 'new++')  #wf_state can't be what was defined.
         get 'list_open_process', {:use_route => :onboard_data_uploadx}
         assigns(:user_accesses).should =~ [q1, q2]
       end

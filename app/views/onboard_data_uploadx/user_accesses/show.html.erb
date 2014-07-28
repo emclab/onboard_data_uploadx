@@ -18,6 +18,10 @@
   <%= @user_access.access_desp %>
 </p>
 <p>
+  <b><%=t('Module Action/Resource') %></b>
+  <%= @module_action.name + '/' + @module_action.data_resource.name if @module_action %>
+</p>
+<p>
   <b><%=t('Action') %></b>
   <%= @user_access.action %>
 </p>

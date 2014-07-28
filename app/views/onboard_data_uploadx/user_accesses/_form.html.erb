@@ -5,6 +5,9 @@
 <%= simple_form_for @user_access do |f| %>    
  
   <%= f.input :engine_id, :label => t('Engine Name'), :collection => @engines %> 
+  <%= f.input :module_action_id, :label => t('Module Action'), :collection => OnboardDataUploadx.module_action_class.where(module_info_id: @engine.id),
+              :label_method => lambda {|r| "##{r.id}, #{r.name},#{r.data_resource.name}"},
+              :value_method => :id,  :include_blank => true if @engine %>
   <%= f.input :access_desp, :label => t('Access Desp'), :input_html => {:rows => 2} %> 
   <%= f.input :action, :label => t('Access Action') %> 
   <%= f.input :resource, :label => t('Resource') %>

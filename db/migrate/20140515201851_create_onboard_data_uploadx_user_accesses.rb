@@ -24,12 +24,13 @@ class CreateOnboardDataUploadxUserAccesses < ActiveRecord::Migration
       t.boolean :tested, :default => false
       t.integer :tested_by_id
       t.date :tested_date
-
       t.timestamps
+      t.integer :module_action_id
     end
     
     add_index :onboard_data_uploadx_user_accesses, :action
     add_index :onboard_data_uploadx_user_accesses, :engine_id
+    add_index :onboard_data_uploadx_user_accesses, :module_action_id
     add_index :onboard_data_uploadx_user_accesses, :resource
     add_index :onboard_data_uploadx_user_accesses, [:action, :resource]
     add_index :onboard_data_uploadx_user_accesses, :wf_state

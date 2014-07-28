@@ -1,4 +1,5 @@
 OnboardDataUploadx.engine_class = 'SwModuleInfox::ModuleInfo'
+OnboardDataUploadx.module_action_class = 'SwModuleInfox::ModuleAction'
 OnboardDataUploadx.project_class = 'InfoServiceProjectx::Project'
 OnboardDataUploadx.engine_ids_belong_to_a_project = "ResourceAllocx::Allocation.where(:active => true, :resource_id => @project_id, :resource_string => 'info_service_projectx/projects').select('detailed_resource_id')"
 OnboardDataUploadx.onboard_engine_config_class = 'OnboardDatax::OnboardEngineConfig'

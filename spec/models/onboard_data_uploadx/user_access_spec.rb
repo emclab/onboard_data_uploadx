@@ -24,8 +24,14 @@ module OnboardDataUploadx
     end
     
     it "should reject dup action when resource, sql code and masked attrs are the same" do
-      c = FactoryGirl.create(:onboard_data_uploadx_user_access, :action => 'a new one', :sql_code => nil, :masked_attrs => nil)
-      c1 = FactoryGirl.build(:onboard_data_uploadx_user_access, :action => 'A New One', :sql_code => nil, :masked_attrs => nil)
+      c = FactoryGirl.create(:onboard_data_uploadx_user_access, :module_action_id => 1, :action => 'a new one', :sql_code => nil, :masked_attrs => nil)
+      c1 = FactoryGirl.build(:onboard_data_uploadx_user_access, :module_action_id => 1, :action => 'A New One', :sql_code => nil, :masked_attrs => nil)
+      c1.should_not be_valid
+    end
+    
+    it "should reject dup module action id, sql code and masked attrs are the same" do
+      c = FactoryGirl.create(:onboard_data_uploadx_user_access, :sql_code => nil, :masked_attrs => 'nil')
+      c1 = FactoryGirl.build(:onboard_data_uploadx_user_access, :action => 'A New One', :sql_code => nil, :masked_attrs => 'nil')
       c1.should_not be_valid
     end
     
@@ -41,6 +47,11 @@ module OnboardDataUploadx
     
     it "should reject 0 engine id" do
       c = FactoryGirl.build(:onboard_data_uploadx_user_access, :engine_id => 0)
+      c.should_not be_valid
+    end
+    
+    it "should reject 0 module action id" do
+      c = FactoryGirl.build(:onboard_data_uploadx_user_access, :module_action_id => 0)
       c.should_not be_valid
     end
   end

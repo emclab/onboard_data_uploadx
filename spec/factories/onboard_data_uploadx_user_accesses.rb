@@ -10,6 +10,7 @@ FactoryGirl.define do
     sql_code "MyText"
     masked_attrs "MyText"
     rank 1
+    module_action_id 1
     #commissioned false
     #commissioned_date "2014-05-15"
     #wf_state "MyString"

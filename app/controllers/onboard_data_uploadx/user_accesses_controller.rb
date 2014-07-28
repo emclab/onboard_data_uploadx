@@ -20,6 +20,8 @@ module OnboardDataUploadx
       @title = t('New User Access')
       @engines = OnboardDataUploadx.engine_class.where(active: true).order('name')
       @user_access = OnboardDataUploadx::UserAccess.new
+      @module_info_id = params[:user_access][:engine_id] if params[:user_access].present?
+      @module_actions = (@module_info_id.present? ? OnboardDataUploadx.module_action_class.where(module_info_id: @module_info_id) : [])
       @erb_code = find_config_const('user_access_new_view', 'onboard_data_uploadx')
     end
 
@@ -42,6 +44,8 @@ module OnboardDataUploadx
       @title = t('Edit User Access')
       @engines = OnboardDataUploadx.engine_class.where(active: true).order('name')
       @user_access = OnboardDataUploadx::UserAccess.find_by_id(params[:id])
+      @module_info_id = params[:user_access][:engine_id] if params[:user_access].present?
+      @module_actions = (@module_info_id.present? ? OnboardDataUploadx.module_action_class.where(module_info_id: @module_info_id) : [])
       @erb_code = find_config_const('@user_access_edit_view', 'onboard_data_uploadx')
       if @user_access.wf_state.present? && @user_access.current_state != :initial_state
         redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=NO Update. Record Being Processed!")
@@ -64,6 +68,7 @@ module OnboardDataUploadx
     def show
       @title = t('User Access Info')
       @user_access = OnboardDataUploadx::UserAccess.find_by_id(params[:id])
+      @module_action = OnboardDataUploadx.module_action_class.find_by_id(@user_access.module_action_id) if @user_access.module_action_id.present?
       @erb_code = find_config_const('user_access_show_view', 'onboard_data_uploadx')
     end
     
