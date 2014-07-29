@@ -7,6 +7,9 @@
   <%= f.input :engine_id, :label => t('Engine Name'), :collection => @engines, :label_method => :name, :value_method => :id, :include_blank => true if @engine.blank? %> 
   <%= f.input :engine_name, :label => t('Engine Name'), :input_html => {:value => @engine.name} if @engine.present? %> 
   <%= f.input :engine_id, :as => :hidden, :input_html => {:value => @engine.id} if @engine.present? %>
+  <%= f.input :module_action_id, :label => t('Module Action'), :collection => OnboardDataUploadx.module_action_class.where(module_info_id: @engine.id),
+              :label_method => lambda {|r| "##{r.id}, #{r.name},#{r.data_resource.name}"},
+              :value_method => :id,  :include_blank => true if @engine %>
   <%= f.input :access_desp, :label => t('Access Desp'), :input_html => {:rows => 2, :value => @copy_from.access_desp} %> 
   <%= f.input :action, :label => t('Access Action'), :input_html => {:value => @copy_from.action } %> 
   <%= f.input :resource, :label => t('Resource'), :input_html => {:value => @copy_from.resource} %>
