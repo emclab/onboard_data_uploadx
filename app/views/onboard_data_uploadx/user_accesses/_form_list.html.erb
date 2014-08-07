@@ -16,6 +16,7 @@
     <th><%=t('Resource')%></th>
     <th><%=t('SQL Code')%></th>
     <th><%=t('Tested')%></th> 
+    <th><%=t('# of Deployment')%></th> 
     <th><%=t('Commissioned')%></th>     
     <th><%=t('Commission Date')%></th>  
     <th><%=t('WF State')%></th>
@@ -37,6 +38,7 @@
     <td><%= r.resource %></td>
     <td><%= r.sql_code[0..40] if r.sql_code.present? %></td>
     <td><%= r.tested ? t('Yes') : t('No') %></td>
+    <td><%= OnboardDatax::OnboardUserAccess.where(user_access_id: r.id).count %></td>
     <td><%= r.commissioned ? t('Yes') : t('No') %></td>
     <td><%= r.commissioned_date.strftime('%Y/%m/%d') if r.commissioned_date.present? %></td>
     <td><%= r.wf_state.humanize.titleize if r.wf_state.present?  %></td>

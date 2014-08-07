@@ -14,8 +14,7 @@
     <th><%=t('Engine Name')%></th>
     <th><%=t('File Name')%></th>
     <th><%=t('Init Code')%></th>
-    <th><%=t('Tested')%></th> 
-    <th><%=t('Commissioned')%></th>     
+    <th><%=t('# of Deployment')%></th> 
     <th><%=t('Commission Date')%></th>  
     <th><%=t('WF State')%></th>
     <th><%=t('Submitted By')%></th>
@@ -33,8 +32,7 @@
     <td><%= r.engine.name %></td>	
     <td><%= r.file_name %></td>   
     <td><%= r.init_code[0..40] %></td>
-    <td><%= r.tested ? t('Yes') : t('No') %></td>
-    <td><%= r.commissioned ? t('Yes') : t('No') %></td>
+    <td><%= OnboardDatax::OnboardEngineInit.where(engine_init_id: r.id).count %></td>
     <td><%= r.commissioned_date.strftime('%Y/%m/%d') if r.commissioned_date.present? %></td>
     <td><%= r.wf_state.humanize.titleize if r.wf_state.present?  %></td>
     <td><%= r.submitted_by.name if r.submitted_by_id.present? %></td> 
