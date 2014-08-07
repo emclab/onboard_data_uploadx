@@ -4,9 +4,8 @@
 <% else %>
 <%= simple_form_for @search_stat_config, :as => :search_stat_config, :url => search_stat_configs_path do |f| %>    
  
-  <%= f.input :engine_id, :label => t('Engine Name'), :collection => @engines, :label_method => :name, :value_method => :id, :include_blank => true if @engine.blank? %> 
-  <%= f.input :engine_name, :label => t('Engine Name'), :input_html => {:value => @engine.name} if @engine.present? %> 
-  <%= f.input :engine_id, :as => :hidden, :input_html => {:value => @engine.id} if @engine.present? %>
+  <%= f.input :engine_name, :label => t('Engine Name'), :readonly => true, :input_html => {:value => @engine.name} %> 
+  <%= f.input :engine_id, :label => t('New Engine Name'), :collection => @engines, :label_method => :name, :value_method => :id, :include_blank => true  %> 
   <%= f.input :config_desp, :label => t('Config Desp'), :input_html => {:rows => 2, :value => @copy_from.config_desp} %> 
   <%= f.input :resource_name, :label => t('Resource Name'), :input_html => {:value => @copy_from.resource_name} %>
   <%= f.input :stat_function, :label => t('Stat Function'), :input_html => {:rows => 10, :value => @copy_from.stat_function} %> 
