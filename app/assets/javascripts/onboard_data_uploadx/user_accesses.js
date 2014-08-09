@@ -7,7 +7,16 @@ $(function() {
 
 $(function (){
 	$('#user_access_engine_id').change(function(){
+      $('#user_access_module_changed').val('module');
       $.get(window.location, $('form').serialize(), null, "script");
   	  return false;
 	});
+});
+
+$(function() {
+  $('#user_access_module_action_id').change(function (){
+      $('#user_access_module_changed').val('action');
+      $.get(window.location, $('form').serialize(), null, "script");
+      return false;
+  });
 });

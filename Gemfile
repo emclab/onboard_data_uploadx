@@ -18,6 +18,8 @@ gem 'sw_module_infox', :path => '../sw_module_infox'
 gem 'resource_allocx', :path => '../resource_allocx'
 gem 'info_service_projectx', :path => '../info_service_projectx'
 gem 'kustomerx', :path => '../kustomerx'
+gem 'onboard_datax', :path => '../onboard_datax'
+gem 'project_misc_definitionx', :path => '../project_misc_definitionx'
 
 # Declare any dependencies that are still in development here instead of in
 # your gemspec. These might include edge Rails or gems from your path or

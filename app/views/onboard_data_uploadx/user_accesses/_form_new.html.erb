@@ -4,7 +4,8 @@
 <% else %>
 <%= simple_form_for @user_access do |f| %>    
  
-  <%= f.input :engine_id, :label => t('Engine Name'), :collection => @engines, :label_method => :name, :value_method => :id, :include_blank => true if @engine.blank? %> 
+  <%= f.input :engine_id, :label => t('Engine Name'), :collection => @engines, :label_method => :name, :value_method => :id, :include_blank => true if @engine.blank? %>
+  <%= f.input :module_changed, :as => :hidden %> 
   <%= f.input :engine_name, :label => t('Engine Name'), :input_html => {:value => @engine.name} if @engine.present? %> 
   <%= f.input :engine_id, :as => :hidden, :input_html => {:value => @engine.id} if @engine.present? %>
   <%= f.input :module_action_id, :label => t('Module Action'), :collection => OnboardDataUploadx.module_action_class.where('created_at > ?', 2.days.ago),

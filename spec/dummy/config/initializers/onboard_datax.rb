@@ -1,0 +1,8 @@
+OnboardDatax.customer_class = 'Kustomerx::Customer'
+OnboardDatax.project_class = 'InfoServiceProjectx::Project'
+OnboardDatax.engine_config_class = 'OnboardDataUploadx::EngineConfig'
+OnboardDatax.user_access_class = 'OnboardDataUploadx::UserAccess'
+OnboardDatax.engine_init_class = 'OnboardDataUploadx::EngineInit'
+OnboardDatax.search_stat_config_class = 'OnboardDataUploadx::SearchStatConfig'
+OnboardDatax.engine_class = 'SwModuleInfox::ModuleInfo'
+OnboardDatax.project_misc_definition_class = 'ProjectMiscDefinitionx::MiscDefinition'

@@ -1,7 +1,22 @@
-<% if @module_info_id.present? %>
+<% if @module_info_id > 0 && params[:user_access][:module_changed] == 'module' %>
   $('#user_access_module_action_id').empty();
   $('#user_access_module_action_id').append('<option value=""></option>');
   <% @module_actions.each do |r| %>
     $('#user_access_module_action_id').append('<option value="<%=r.id%>"><%= "##{r.id},"+ ' ' + "#{r.name}," + ' ' + "#{r.data_resource.name}" %></option>');
   <% end %>
+  $('#user_access_action').val('');
+  $('#user_access_resource').val('');
+  $('#user_access_module_changed').val('');
+<% end %>
+<% if @module_info_id > 0 && @module_action_id > 0 && params[:user_access][:module_changed] == 'action' %>
+  <% module_action = OnboardDataUploadx.module_action_class.find_by_id(@module_action_id) %>
+  $('#user_access_action').val('<%=module_action.name%>');
+  $('#user_access_resource').val("<%=module_action.data_resource.name%>");
+  $('#user_access_module_changed').val('');
+<% end %>
+<% if @module_info_id.blank? or @module_info_id == 0 %>
+  $('#user_access_module_action_id').empty();
+  $('#user_access_module_action_id').append('<option value=""></option>');
+  $('#user_access_action').val('');
+  $('#user_access_resource').val('');
 <% end %>

@@ -28,13 +28,14 @@ module OnboardDataUploadx
         
       end
     end
-    attr_accessor  :wf_comment, :id_noupdate, :wf_state_noupdate, :wf_event, :last_updated_by_name, :engine_name, :engine_id_noupdate
+    attr_accessor  :wf_comment, :id_noupdate, :wf_state_noupdate, :wf_event, :last_updated_by_name, :engine_name, :engine_id_noupdate, :module_changed
     attr_accessible :access_desp, :action, :brief_note, :masked_attrs, :rank, :resource, :sql_code, :wf_state, :tested, :engine_id, :module_action_id,
+                    :module_changed,
                     :as => :role_new
     attr_accessible :access_desp, :action, :brief_note, :commissioned, :commissioned_by_id, :commissioned_date, :decommissioned, :decommissioned_by_id, 
                     :decommissioned_date, :last_updated_by_id, :masked_attrs, :rank, :resource, :reviewed, :reviewed_by_id, :sql_code, :module_action_id,
                     :submitted_by_id, :wf_state, :tested, :tested_by_id, :engine_name, :tested_date, :reviewed_date, :engine_id,
-                    :wf_comment, :id_noupdate, :wf_state_noupdate,
+                    :wf_comment, :id_noupdate, :wf_state_noupdate, :module_changed,
                     :as => :role_update  
                     
     attr_accessor :start_date_s, :end_date_s, :submitted_by_id_s, :commissioned_s, :decommissioned_s, :tested_s, :reviewed_s, :action_s, :resource_s, 

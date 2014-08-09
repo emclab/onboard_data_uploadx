@@ -10,6 +10,8 @@ Rails.application.routes.draw do
   mount ResourceAllocx::Engine => '/res_alloc'
   mount InfoServiceProjectx::Engine => '/project'
   mount Kustomerx::Engine => '/customer'
+  mount OnboardDatax::Engine => '/onboard'
+  mount ProjectMiscDefinitionx::Engine => '/proj_mis_def'
   
   resource :session
   
