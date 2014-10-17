@@ -41,10 +41,10 @@ module OnboardDataUploadx
                     :as => :role_update
     
     attr_accessor :start_date_s, :end_date_s, :submitted_by_id_s, :commissioned_s, :decommissioned_s, :tested_s, :reviewed_s, :argument_name_s, :engine_id_s, 
-                  :argument_desp_s, :commissioned_by_id_s, :decommissioned_by_id_s, :tested_by_id_s, :reviewed_by_id_s
+                  :argument_desp_s, :commissioned_by_id_s, :decommissioned_by_id_s, :tested_by_id_s, :reviewed_by_id_s, :argument_value_s
 
     attr_accessible :start_date_s, :end_date_s, :submitted_by_id_s, :commissioned_s, :decommissioned_s, :tested_s, :reviewed_s, :argument_name_s, :engine_id_s, 
-                    :argument_desp_s, :commissioned_by_id_s, :decommissioned_by_id_s, :tested_by_id_s, :reviewed_by_id_s,
+                    :argument_desp_s, :commissioned_by_id_s, :decommissioned_by_id_s, :tested_by_id_s, :reviewed_by_id_s, :argument_value_s,
                     :as => :role_search_stats
     
     belongs_to :last_updated_by, :class_name => 'Authentify::User'
