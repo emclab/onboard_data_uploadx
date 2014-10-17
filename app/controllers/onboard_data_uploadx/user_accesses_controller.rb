@@ -88,6 +88,11 @@ module OnboardDataUploadx
       @user_access = OnboardDataUploadx::UserAccess.new
       @copy_from = OnboardDataUploadx::UserAccess.find_by_id(params[:id])
       @engines = OnboardDataUploadx.engine_class.where(active: true).order('name')
+      if params[:user_access].present?
+        @module_info_id = params[:user_access][:engine_id].to_i
+        @module_actions = (@module_info_id.present? ? OnboardDataUploadx.module_action_class.where(module_info_id: @module_info_id) : [])
+        @module_action_id = params[:user_access][:module_action_id].to_i
+      end
       @erb_code = find_config_const('user_access_copy_view', 'onboard_data_uploadx')
     end
     
