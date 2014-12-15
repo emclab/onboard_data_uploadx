@@ -52,7 +52,7 @@ module OnboardDataUploadx
         @module_actions = (@module_info_id.present? ? OnboardDataUploadx.module_action_class.where(module_info_id: @module_info_id) : [])
         @module_action_id = params[:user_access][:module_action_id].to_i
       end
-      @erb_code = find_config_const('@user_access_edit_view', 'onboard_data_uploadx')
+      @erb_code = find_config_const('user_access_edit_view', 'onboard_data_uploadx')
       if @user_access.wf_state.present? && @user_access.current_state != :initial_state
         redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=NO Update. Record Being Processed!")
       end
