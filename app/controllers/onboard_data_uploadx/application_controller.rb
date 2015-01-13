@@ -25,5 +25,15 @@ module OnboardDataUploadx
     def view_in_config?
       @view_in_config = Authentify::AuthentifyUtility.load_view_in_config
     end
+    
+    #engine's
+    def engine_boarded(models)
+      engine_boarded = ''
+      models.each do |r|
+        engine = OnboardDatax.engine_class.find_by_id(r.engine_id)
+        engine_boarded += ' ' + engine.name unless engine_boarded.include?(engine.name)
+      end
+      return engine_boarded, models.uniq.pluck('engine_id').size
+    end
   end
 end

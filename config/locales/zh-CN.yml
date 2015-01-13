@@ -126,3 +126,7 @@ zh-CN:
   Module Action/Resource : '模块动作/数据'
   '# of Deployment' : '部署次数'
   Sql Code : 'SQL码'
+  Engines Boarded : '已初始化Engine'
+  'Engines Boarded#' : '已初始化Engine数量'
+  Engines Unboarded : '未初始化Engine'
+  
