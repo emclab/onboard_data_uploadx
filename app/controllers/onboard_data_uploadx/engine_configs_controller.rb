@@ -86,8 +86,8 @@ module OnboardDataUploadx
     
     def engine_for_mass_onboard
       @title = t('Select Engines for Onboard')
-      @engines = eval(OnboardDataUploadx.engine_ids_belong_to_a_project) if @project_id #engine_id
-      @engines = OnboardDataUploadx.engine_class.where(active: true).where(:id => @engines).order('id')
+      engine_ids = eval(OnboardDataUploadx.engine_ids_belong_to_a_project) #if @project_id #engine_id
+      @engines = OnboardDataUploadx.engine_class.where(active: true).where(:id => engine_ids).order('id')
       @engine_boarded, @engine_num_boarded = engine_boarded(OnboardDatax::OnboardEngineConfig.where(project_id: @project_id)) if @project_id
       @erb_code = find_config_const('engine_config_engine_for_mass_onboard_view', 'onboard_data_uploadx')
       redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Select engine(s) for onboard") if @engines.blank?

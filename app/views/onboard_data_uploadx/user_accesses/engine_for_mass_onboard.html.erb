@@ -14,11 +14,14 @@
   </tr>
 
 <% @engines.each do |r| %>
-  <tr>
-    <td><%= check_box_tag 'id_array[]', r.id %></td>
-    <td><%= r.name %></td>
-    <td><%= r.module_desp[0..60] if r.module_desp %></td>
-  </tr>
+  <% @roles.each do |role| %>
+    <tr>
+      <td><%= check_box_tag 'id_array[]', [r.id,role.id].join(',') %></td>
+      <td><%= r.name %></td>
+      <td><%= role.name %></td>
+      <td><%= r.module_desp[0..60] if r.module_desp %></td>
+    </tr>
+  <% end %>
 <% end %>
    <table class="table table-striped">
 	  <tr>

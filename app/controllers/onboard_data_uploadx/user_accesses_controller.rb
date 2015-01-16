@@ -103,8 +103,9 @@ module OnboardDataUploadx
     
     def engine_for_mass_onboard
       @title = t('Select Engines for Onboard')
-      @engines = eval(OnboardDataUploadx.engine_ids_belong_to_a_project) if @project_id #engine_id
-      @engines = OnboardDataUploadx.engine_class.where(active: true).where(:id => @engines).order('name')
+      engine_ids = eval(OnboardDataUploadx.engine_ids_belong_to_a_project) #if @project_id #engine_id
+      @engines = OnboardDataUploadx.engine_class.where(active: true).where(:id => engine_ids).order('name')
+      @roles = OnboardDataUploadx.project_misc_definition_class.where(:project_id => @project_id).where(:definition_category => 'role_definition').order('ranking_index')
       @engine_boarded, @engine_num_boarded = engine_boarded(OnboardDatax::OnboardUserAccess.where(project_id: @project_id)) if @project_id
       @erb_code = find_config_const('user_access_engine_for_mass_onboard_view', 'onboard_data_uploadx')
       redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Select engine(s) for onboard") if @engines.blank?
@@ -114,8 +115,9 @@ module OnboardDataUploadx
       @title = t('Onboard User Access')
       @project_id = params[:save].keys[0]
       @project = OnboardDataUploadx.project_class.find_by_id(@project_id)
-      @roles = OnboardDataUploadx.project_misc_definition_class.where(:project_id => @project_id).where(:definition_category => 'role_definition').order('ranking_index')
-      @engine_ids_array = params[:id_array]
+      #@roles = OnboardDataUploadx.project_misc_definition_class.where(:project_id => @project_id).where(:definition_category => 'role_definition').order('ranking_index')
+      #@engine_ids_array = params[:id_array]
+      @engine_ids_array, @roles = return_engine_n_role(params[:id_array])
       @erb_code = find_config_const('user_access_mass_onboard_view', 'onboard_data_uploadx')
       redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Select access for onboard") if @engine_ids_array.blank?
     end
@@ -152,5 +154,17 @@ module OnboardDataUploadx
       @access_action = params[:access_action].strip if params[:access_action].present?
       @resource = params[:resource].strip if params[:resource].present?
     end
+    
+    def return_engine_n_role(ids_array)
+      engine_ids = []
+      role_ids = []
+      ids_array.each do |id|  #ids passed in as a string of 'user_access_id, role_id'
+        id = id.split(',')
+        engine_ids << id[0].to_i unless engine_ids.include?(id[0].to_i)
+        role_ids << id[1].to_i unless role_ids.include?(id[1].to_i)
+      end      
+      return engine_ids, OnboardDataUploadx.project_misc_definition_class.where(:id => role_ids).order('ranking_index')
+    end
+    
   end
 end
