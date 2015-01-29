@@ -33,6 +33,8 @@ module OnboardDataUploadx
       @user_access = OnboardDataUploadx::UserAccess.new(params[:user_access], :as => :role_new)
       @user_access.last_updated_by_id = session[:user_id]
       @user_access.submitted_by_id = session[:user_id]
+      @user_access.action = @user_access.action.strip if @user_access.action  #remove space for hit in search
+      @user_access.resource = @user_access.resource.strip if @user_access.resource
       if @user_access.save
         redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Saved!")
       else
@@ -61,6 +63,8 @@ module OnboardDataUploadx
     def update
         @user_access = OnboardDataUploadx::UserAccess.find_by_id(params[:id])
         @user_access.last_updated_by_id = session[:user_id]
+        params[:user_access][:action] = params[:user_access][:action].strip if params[:user_access][:action]
+        params[:user_access][:resource] = params[:user_access][:resource].strip if params[:user_access][:resource]
         if @user_access.update_attributes(params[:user_access], :as => :role_update)
           redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Updated!")
         else
@@ -164,6 +168,12 @@ module OnboardDataUploadx
         role_ids << id[1].to_i unless role_ids.include?(id[1].to_i)
       end      
       return engine_ids, OnboardDataUploadx.project_misc_definition_class.where(:id => role_ids).order('ranking_index')
+    end
+    
+    def strip_params(model)
+      params[model].each do |k, v|
+        params[model][k] = v.strip if v.present?
+      end
     end
     
   end

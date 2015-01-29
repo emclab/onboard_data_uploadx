@@ -26,6 +26,7 @@ module OnboardDataUploadx
       @search_stat_config = OnboardDataUploadx::SearchStatConfig.new(params[:search_stat_config], :as => :role_new)
       @search_stat_config.last_updated_by_id = session[:user_id]
       @search_stat_config.submitted_by_id = session[:user_id]
+      @search_stat_config.resource_name = @search_stat_config.resource_name.strip if @search_stat_config.resource_name  #remove space for match
       if @search_stat_config.save
         redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Saved!")
       else
@@ -49,6 +50,7 @@ module OnboardDataUploadx
     def update
       @search_stat_config = OnboardDataUploadx::SearchStatConfig.find_by_id(params[:id])
       @search_stat_config.last_updated_by_id = session[:user_id]
+      params[:search_stat_config][:resource_name] = params[:search_stat_config][:resource_name].strip if params[:search_stat_config][:resource_name]
       if @search_stat_config.update_attributes(params[:search_stat_config], :as => :role_update)
         redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Updated!")
       else
