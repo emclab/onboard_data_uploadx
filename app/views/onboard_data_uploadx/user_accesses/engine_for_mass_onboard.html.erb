@@ -4,12 +4,16 @@
 <% else %>
 
 <p><%=t('Project')%>=<%=@project.name if @project %></p>
-<%=t('# of engines')%>=<%=@engines.count if @engines %>
+<p><%=t('Engines Boarded')%>=<%=@engine_boarded %></p>
+<p><%=t('Engines Boarded#')%>=<%=@engine_num_boarded %></p>
+<p><%=t('# of engines')%>=<%=@engines.count if @engines %></p>
+<p><%=t('Engines Unboarded')%>=<%=(@engines.pluck('name') - @engine_boarded.split(' ')).join(', ') %></p>
 <%= form_tag mass_onboard_user_accesses_path, :method => :get do %>
 <table class="table table-striped">
   <tr>
   	 <th></th>
      <th><%= t('Engine Name') %></th>
+     <th><%= t('Role Name') %></th>
      <th><%= t('Engine Desp') %></th>
   </tr>
 
@@ -27,7 +31,8 @@
 	  <tr>
 	    <th>
   		  <%= link_to t('Back'), SUBURI + "/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
-  		  <%= submit_tag t('Save') ,:name => "save[#{@project_id}]", :class => BUTTONS_CLS['action'] %>
+  		  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                 <%= submit_tag t('Save') ,:name => "save[#{@project_id}]", :class => BUTTONS_CLS['action'] %>
   	    </th>
 	  </tr>
 	</table> 
