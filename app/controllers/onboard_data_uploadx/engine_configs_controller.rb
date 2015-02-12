@@ -28,6 +28,7 @@ module OnboardDataUploadx
       @engine_config.last_updated_by_id = session[:user_id]
       @engine_config.submitted_by_id = session[:user_id]
       @engine_config.argument_name = @engine_config.argument_name.strip if @engine_config.argument_name  #remove space for hit in search
+      @engine_config.argument_value = @engine_config.argument_value.strip if @engine_config.argument_value
       if @engine_config.save
         redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Saved!")
       else
@@ -52,6 +53,7 @@ module OnboardDataUploadx
       @engine_config = OnboardDataUploadx::EngineConfig.find_by_id(params[:id])
       @engine_config.last_updated_by_id = session[:user_id]
       params[:engine_config][:argument_name] = params[:engine_config][:argument_name].strip if params[:engine_config][:argument_name]
+      params[:engine_config][:argument_value] = params[:engine_config][:argument_value].strip if params[:engine_config][:argument_value]
       if @engine_config.update_attributes(params[:engine_config], :as => :role_update)
         redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Updated!")
       else
