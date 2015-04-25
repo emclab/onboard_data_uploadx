@@ -118,6 +118,7 @@ module OnboardDataUploadx
         onboard_item.engine_id = engine.id
         onboard_item.project_id = project_id
         onboard_item.last_updated_by_id = session[:user_id]
+        onboard_item.release_id = params[:release_version]
         begin
           onboard_item.save
         rescue => e

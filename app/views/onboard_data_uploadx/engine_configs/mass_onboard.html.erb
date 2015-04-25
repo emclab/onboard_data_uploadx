@@ -7,6 +7,9 @@
 <p><%=t('Project')%>=<%=@project.name if @project %></p>
 <%=t('# of records')%>=<%=OnboardDataUploadx::EngineConfig.where(:engine_id => @engine_ids_array).count if @engine_ids_array %>
 <%= form_tag mass_onboard_result_engine_configs_path, :method => :put do %>
+  <% releases = OnboardDataUploadx.project_misc_definition_class.where('definition_category = ? AND project_id = ?', 'release', @project.id).order('id DESC')%>
+  <%= label_tag(:release, 'Release') %>
+  <%= select_tag(:release_version, options_for_select(releases.select('id, name').map{|r| [r.name, r.id]})) %>
 <table class="table table-striped">
   <tr>
   	 <th></th>

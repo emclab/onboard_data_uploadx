@@ -6,13 +6,14 @@ class CreateOnboardDataxOnboardEngineConfigs < ActiveRecord::Migration
       t.integer :last_updated_by_id
       t.integer :engine_config_id
       t.text :custom_argument_value
-      t.integer :engine_id
-      
+      t.integer :engine_id      
       t.timestamps
+      t.integer :release_id
     end
     
     add_index :onboard_datax_onboard_engine_configs, :project_id
     add_index :onboard_datax_onboard_engine_configs, :engine_config_id
     add_index :onboard_datax_onboard_engine_configs, :engine_id
+    add_index :onboard_datax_onboard_engine_configs, :release_id
   end
 end

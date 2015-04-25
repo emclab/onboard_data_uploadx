@@ -8,6 +8,9 @@
 <%=t('# of records')%>=<%=(OnboardDataUploadx::UserAccess.where(:engine_id => @engine_ids_array).size * @roles.count).to_i if @engine_ids_array && @roles %>
 <p><%=t('# of roles')%>=<%=@role ? @roles.size : 0 %></p>
 <%= form_tag mass_onboard_result_user_accesses_path, :method => :put do %>
+  <% releases = OnboardDataUploadx.project_misc_definition_class.where('definition_category = ? AND project_id = ?', 'release', @project.id).order('id DESC')%>
+  <%= label_tag(:release, 'Release') %>
+  <%= select_tag(:release_version, options_for_select(releases.select('id, name').map{|r| [r.name, r.id]})) %>
 <table class="table table-striped">
   <tr>
   	 <th></th>

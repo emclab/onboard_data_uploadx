@@ -6,12 +6,13 @@ class CreateOnboardDataxOnboardEngineInits < ActiveRecord::Migration
       t.integer :last_updated_by_id
       t.integer :engine_init_id
       t.integer :engine_id
-
       t.timestamps
+      t.integer :release_id
     end
     
     add_index :onboard_datax_onboard_engine_inits, :project_id
     add_index :onboard_datax_onboard_engine_inits, :engine_init_id
     add_index :onboard_datax_onboard_engine_inits, :engine_id
+    add_index :onboard_datax_onboard_engine_inits, :release_id
   end
 end
